@@ -313,6 +313,104 @@ a {
   font-size: 1.15rem;
 }
 
+.studio {
+  padding: var(--space-6) var(--space-3);
+  text-align: center;
+  background: var(--color-bg-alt);
+}
+
+.studio__inner {
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.studio__copy {
+  color: var(--color-text-muted);
+  font-size: 1.15rem;
+}
+
+.roadmap {
+  padding: var(--space-6) var(--space-3);
+  text-align: center;
+  background: linear-gradient(180deg, var(--color-bg-alt) 0%, var(--color-bg) 100%);
+}
+
+.roadmap__timeline {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+  max-width: 60rem;
+  margin: 0 auto var(--space-4);
+}
+
+.roadmap__step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  flex: 1 1 12rem;
+  padding: 0 var(--space-3) var(--space-3);
+}
+
+.roadmap__step::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -50%;
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.roadmap__step:first-child::before {
+  content: none;
+}
+
+.roadmap__dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  border: 2px solid var(--color-text-muted);
+  z-index: 1;
+}
+
+.roadmap__step--done .roadmap__dot {
+  background: var(--color-green);
+  border-color: var(--color-green);
+  box-shadow: 0 0 12px rgba(57, 255, 157, 0.6);
+}
+
+.roadmap__step--active .roadmap__dot {
+  background: var(--color-cyan);
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+}
+
+.roadmap__label {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+}
+
+.roadmap__status {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.roadmap__copy {
+  color: var(--color-text-muted);
+  font-size: 1.05rem;
+  max-width: 36rem;
+  margin: 0 auto;
+}
+
 .footer {
   display: flex;
   flex-wrap: wrap;
@@ -352,6 +450,23 @@ a {
   .footer {
     flex-direction: column;
     text-align: center;
+  }
+
+  .roadmap__timeline {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .roadmap__step {
+    padding: var(--space-3) 0 0;
+  }
+
+  .roadmap__step::before {
+    top: -1px;
+    left: 50%;
+    width: 1px;
+    height: var(--space-3);
+    transform: translateX(-50%);
   }
 }
 
