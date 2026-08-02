@@ -108,7 +108,12 @@ a {
 #games,
 #studio,
 #roadmap,
-#partner {
+#partner,
+#live-now,
+#odds,
+#feedback,
+#compliance,
+#integrate {
   scroll-margin-top: 72px;
 }
 
@@ -428,7 +433,7 @@ a {
 }
 
 .about {
-  background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+  background: var(--color-bg-alt);
 }
 
 .studio {
@@ -437,7 +442,7 @@ a {
 
 .partner {
   padding: var(--space-6) var(--space-3);
-  background: var(--color-bg);
+  background: linear-gradient(180deg, var(--color-bg-alt) 0%, var(--color-bg) 100%);
 }
 
 .partner__grid {
@@ -615,7 +620,7 @@ a {
 
 .odds {
   padding: var(--space-6) var(--space-3);
-  background: var(--color-bg-alt);
+  background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
 }
 
 .compliance {
@@ -785,6 +790,7 @@ a {
 .feedback__card {
   position: relative;
   min-width: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   padding: var(--space-4);
@@ -822,8 +828,20 @@ a {
 .feedback__text {
   color: var(--color-text);
   line-height: 1.6;
-  margin-bottom: var(--space-3);
+  margin: 0 0 var(--space-3);
   flex-grow: 1;
+}
+
+.feedback__sr-prefix {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .feedback__role {
@@ -1153,7 +1171,7 @@ a {
 
 .integrate {
   padding: var(--space-6) var(--space-3);
-  background: var(--color-bg-alt);
+  background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
 }
 
 .integrate__head {
@@ -1224,7 +1242,6 @@ a {
 .integrate__card {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-4);
   max-width: 64rem;
   margin: 0 auto;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1272,8 +1289,12 @@ a {
 }
 
 .integrate__input:focus {
-  outline: none;
   border-color: var(--color-cyan);
+}
+
+.integrate__input:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
 }
 
 button.cta {

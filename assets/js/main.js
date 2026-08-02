@@ -31,7 +31,10 @@ if ('IntersectionObserver' in window) {
   const spinsLabel = document.getElementById('oddsSpinsLabel');
 
   const halfWidthBySpins = { '100': 70, '1000': 14, '10000': 6, '100000': 1.5 };
-  const domainHalfWidth = Math.max(...Object.values(halfWidthBySpins)) * 2.2;
+  const mean = 96;
+  const domainHalfWidth = 35;
+  const xMin = Math.max(0, mean - domainHalfWidth);
+  const xMax = mean + domainHalfWidth;
 
   function drawChart(spins) {
     const w = canvas.width;
@@ -39,12 +42,9 @@ if ('IntersectionObserver' in window) {
     ctx.clearRect(0, 0, w, h);
     const halfWidth = halfWidthBySpins[spins] || 14;
     const stddev = halfWidth / 2;
-    const mean = 96;
     const padding = 40;
     const plotW = w - padding * 2;
     const plotH = h - padding * 2;
-    const xMin = mean - domainHalfWidth;
-    const xMax = mean + domainHalfWidth;
 
     ctx.strokeStyle = 'rgba(255,255,255,0.15)';
     ctx.lineWidth = 1;
@@ -86,20 +86,41 @@ if ('IntersectionObserver' in window) {
     ctx.lineTo(meanX, h - padding);
     ctx.stroke();
     ctx.setLineDash([]);
+
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(139, 147, 179, 0.9)';
+    ctx.font = '12px sans-serif';
+    ctx.textBaseline = 'top';
+    ctx.textAlign = 'left';
+    ctx.fillText(Math.round(xMin) + '%', padding, h - padding + 8);
+    ctx.textAlign = 'center';
+    ctx.fillText(mean + '%', meanX, h - padding + 8);
+    ctx.textAlign = 'right';
+    ctx.fillText(Math.round(xMax) + '%', w - padding, h - padding + 8);
+  }
+
+  function setActive(activeBtn) {
+    buttons.forEach((b) => {
+      const isActive = b === activeBtn;
+      b.classList.toggle('is-active', isActive);
+      b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
   }
 
   buttons.forEach((btn) => {
     btn.addEventListener('click', () => {
-      buttons.forEach((b) => b.classList.remove('is-active'));
-      btn.classList.add('is-active');
+      setActive(btn);
       const spins = btn.dataset.spins;
       const range = btn.dataset.range;
+      const spinsText = Number(spins).toLocaleString() + ' spins';
       if (rangeLabel) rangeLabel.textContent = range;
-      if (spinsLabel) spinsLabel.textContent = Number(spins).toLocaleString() + ' spins';
+      if (spinsLabel) spinsLabel.textContent = spinsText;
+      canvas.setAttribute('aria-label', 'Bell curve chart showing the likely RTP range narrowing toward 96 percent. Currently showing ' + spinsText + ', typical range ' + range + '.');
       drawChart(spins);
     });
   });
 
+  setActive(document.querySelector('.odds__picker-btn.is-active'));
   drawChart('1000');
 })();
 
