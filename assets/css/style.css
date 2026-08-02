@@ -113,7 +113,8 @@ a {
 #odds,
 #feedback,
 #compliance,
-#integrate {
+#integrate,
+#integrate-form {
   scroll-margin-top: 72px;
 }
 
@@ -433,7 +434,7 @@ a {
 }
 
 .about {
-  background: var(--color-bg-alt);
+  background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
 }
 
 .studio {
@@ -1070,8 +1071,7 @@ a {
     animation: none;
   }
 
-  .roadmap__step::before,
-  .integrate__step::before {
+  .roadmap__step::before {
     animation: none;
   }
 }
@@ -1191,7 +1191,7 @@ a {
 
 .integrate {
   padding: var(--space-6) var(--space-3);
-  background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+  background: var(--color-bg-alt);
 }
 
 .integrate__head {
@@ -1295,6 +1295,12 @@ a {
   background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.12) 40%, var(--color-magenta) 50%, rgba(255, 255, 255, 0.12) 60%, rgba(255, 255, 255, 0.12) 100%);
   background-size: 300% 100%;
   animation: line-sweep 3.5s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .integrate__step::before {
+    animation: none;
+  }
 }
 
 .integrate__num {
