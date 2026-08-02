@@ -443,7 +443,7 @@ a {
 
 .partner {
   padding: var(--space-6) var(--space-3);
-  background: linear-gradient(180deg, var(--color-bg-alt) 0%, var(--color-bg) 100%);
+  background: var(--color-bg);
 }
 
 .partner__grid {
@@ -633,7 +633,7 @@ a {
 
 .odds {
   padding: var(--space-6) var(--space-3);
-  background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+  background: var(--color-bg-alt);
 }
 
 .compliance {
