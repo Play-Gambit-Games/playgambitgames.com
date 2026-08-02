@@ -67,7 +67,7 @@ hero), so there's no jarring transition between sections:
 
 1. **Hero**: wordmark, tagline, animated grid background (see Visual design).
 2. **Games showcase**: two cards:
-   - *Sweet or a Wild*: LIVE badge, "Play Now" CTA linking to
+   - *Sweet Bomb or a Wild*: LIVE badge, "Play Now" CTA linking to
      `https://elite-sweet-bonanza.rork.app` (`target="_blank" rel="noopener"`).
    - *Dragon Hoard*: COMING SOON badge, teaser copy, no outbound link.
 3. **About the studio**: qualitative copy only (e.g. "Built for Stake Engine. Two

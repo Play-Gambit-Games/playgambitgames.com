@@ -179,9 +179,9 @@ a {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Play Gambit Games</title>
-  <meta name="description" content="Play Gambit Games is a slot studio building Sweet or a Wild and Dragon Hoard for the Stake Engine.">
+  <meta name="description" content="Play Gambit Games is a slot studio building Sweet Bomb or a Wild and Dragon Hoard for the Stake Engine.">
   <meta property="og:title" content="Play Gambit Games">
-  <meta property="og:description" content="A slot studio building Sweet or a Wild and Dragon Hoard for the Stake Engine.">
+  <meta property="og:description" content="A slot studio building Sweet Bomb or a Wild and Dragon Hoard for the Stake Engine.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://playgambitgames.com">
   <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
@@ -425,7 +425,7 @@ git commit -m "Add animated cyberpunk hero section"
   <div class="games__grid">
     <article class="game-card game-card--live reveal">
       <span class="game-card__badge game-card__badge--live">Live</span>
-      <h3 class="game-card__title">Sweet or a Wild</h3>
+      <h3 class="game-card__title">Sweet Bomb or a Wild</h3>
       <p class="game-card__copy">Live now on the Stake Engine.</p>
       <a class="game-card__cta" href="https://elite-sweet-bonanza.rork.app" target="_blank" rel="noopener">
         Play Now
@@ -535,7 +535,7 @@ git commit -m "Add animated cyberpunk hero section"
 - [ ] **Step 3: Verify in browser**
 
 Run: open `index.html`, scroll to the games section
-Expected: two cards side by side on desktop, "Sweet or a Wild" with a green LIVE badge and working "Play Now" link (opens `https://elite-sweet-bonanza.rork.app` in a new tab), "Dragon Hoard" with a magenta COMING SOON badge and no link. Both cards lift and glow on hover.
+Expected: two cards side by side on desktop, "Sweet Bomb or a Wild" with a green LIVE badge and working "Play Now" link (opens `https://elite-sweet-bonanza.rork.app` in a new tab), "Dragon Hoard" with a magenta COMING SOON badge and no link. Both cards lift and glow on hover.
 
 - [ ] **Step 4: Commit**
 
@@ -819,7 +819,7 @@ git commit -m "Fix issues found during visual QA pass"
 
 ```bash
 git push -u origin feat/initial-landing-page
-gh pr create --title "Add playgambitgames.com landing page" --body "Static cyberpunk-themed landing page for the studio, showcasing Sweet or a Wild (live) and Dragon Hoard (coming soon). No em dashes, no fabricated stats, no slot imagery."
+gh pr create --title "Add playgambitgames.com landing page" --body "Static cyberpunk-themed landing page for the studio, showcasing Sweet Bomb or a Wild (live) and Dragon Hoard (coming soon). No em dashes, no fabricated stats, no slot imagery."
 ```
 
 - [ ] **Step 2: Invoke the `/gate-review` skill on this PR**
