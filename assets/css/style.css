@@ -478,3 +478,10 @@ a {
     transform: none;
   }
 }
+
+@media print {
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
