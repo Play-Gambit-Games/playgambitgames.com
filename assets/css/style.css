@@ -102,6 +102,12 @@ a {
   background: radial-gradient(circle, rgba(255, 47, 208, 0.25) 0%, transparent 60%);
   filter: blur(40px);
   pointer-events: none;
+  animation: glow-breathe 5s ease-in-out infinite;
+}
+
+@keyframes glow-breathe {
+  0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
 }
 
 .hero__content {
@@ -211,6 +217,7 @@ a {
 
 @media (prefers-reduced-motion: reduce) {
   .hero__grid,
+  .hero__glow,
   .hero__title .glitch::before,
   .hero__title .glitch::after {
     animation: none;
@@ -229,6 +236,14 @@ a {
   gap: var(--space-4);
   max-width: 72rem;
   margin: 0 auto;
+}
+
+.games__grid .reveal:nth-child(1) {
+  transition-delay: 0s;
+}
+
+.games__grid .reveal:nth-child(2) {
+  transition-delay: 0.15s;
 }
 
 .game-card {
@@ -350,6 +365,13 @@ a {
   font-size: 0.85rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  transition: border-color var(--transition-base), color var(--transition-base), transform var(--transition-base);
+}
+
+.platform__badge:hover {
+  border-color: var(--color-cyan);
+  color: var(--color-text);
+  transform: translateY(-2px);
 }
 
 .about {
@@ -423,6 +445,12 @@ a {
   background: var(--color-cyan);
   border-color: var(--color-cyan);
   box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+  animation: dot-pulse 2s ease-in-out infinite;
+}
+
+@keyframes dot-pulse {
+  0%, 100% { box-shadow: 0 0 12px rgba(0, 240, 255, 0.6); }
+  50% { box-shadow: 0 0 22px rgba(0, 240, 255, 0.9); }
 }
 
 .roadmap__label {
@@ -511,6 +539,10 @@ a {
     transition: none;
     opacity: 1;
     transform: none;
+  }
+
+  .roadmap__step--active .roadmap__dot {
+    animation: none;
   }
 }
 
