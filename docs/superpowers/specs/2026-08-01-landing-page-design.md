@@ -1,4 +1,4 @@
-# Play Gambit Games Landing Page — Design Spec
+# Play Gambit Games Landing Page: Design Spec
 
 Date: 2026-08-01
 Status: Approved by user, pending spec review
@@ -12,11 +12,11 @@ custom domain and HTTPS.
 ## Non-goals
 
 - No CMS, no JS framework, no backend, no analytics/forms in this iteration (the
-  architecture doesn't block adding these later — see Architecture).
+  architecture doesn't block adding these later, see Architecture).
 - No fabricated statistics or invented player/revenue numbers. The "About" section
   uses qualitative copy only; no numeric claims should be added until they're real.
 - No slot-machine imagery (reels, spinning wheels, fruit symbols) anywhere on the page,
-  per explicit direction — the visual language is cyberpunk/futuristic, not casino kitsch.
+  per explicit direction: the visual language is cyberpunk/futuristic, not casino kitsch.
 
 ## Architecture
 
@@ -24,7 +24,7 @@ Plain static HTML/CSS/JS, no build step, no framework. Chosen because:
 - The site is a single page with no interactivity beyond scroll/hover effects.
 - GitHub Pages serves static files directly from `main` with zero CI/build config.
 - Any section (or the whole page) can be wholesale-replaced later without fighting
-  generated output or build tooling — this was an explicit requirement.
+  generated output or build tooling: this was an explicit requirement.
 
 Repo layout:
 
@@ -41,10 +41,16 @@ playgambitgames.com/
 ```
 
 Each content section in `index.html` is wrapped in a clearly labeled HTML comment block
-(e.g. `<!-- SECTION: Hero -->`, `<!-- SECTION: Games -->`) so any one section — or the
-whole file — can be swapped out independently later.
+(e.g. `<!-- SECTION: Hero -->`, `<!-- SECTION: Games -->`) so any one section, or the
+whole file, can be swapped out independently later.
 
 ## Visual design
+
+Quality bar: this should read as a portfolio-grade, Dribbble-quality landing page, not
+a template. That means deliberate type pairing and scale, considered spacing rhythm,
+layered depth (glow, blur, subtle parallax) instead of flat color blocks, and motion
+that feels designed rather than decorative. The implementation phase should pull
+reference from current Dribbble cyberpunk/sci-fi landing page work before writing CSS.
 
 Cyberpunk/futuristic theme, applied consistently across the whole page (not just the
 hero), so there's no jarring transition between sections:
@@ -59,14 +65,14 @@ hero), so there's no jarring transition between sections:
 
 ## Content sections
 
-1. **Hero** — wordmark, tagline, animated grid background (see Visual design).
-2. **Games showcase** — two cards:
-   - *Sweet or a Wild* — LIVE badge, "Play Now" CTA linking to
+1. **Hero**: wordmark, tagline, animated grid background (see Visual design).
+2. **Games showcase**: two cards:
+   - *Sweet or a Wild*: LIVE badge, "Play Now" CTA linking to
      `https://elite-sweet-bonanza.rork.app` (`target="_blank" rel="noopener"`).
-   - *Dragon Hoard* — COMING SOON badge, teaser copy, no outbound link.
-3. **About the studio** — qualitative copy only (e.g. "Built for Stake Engine. Two
+   - *Dragon Hoard*: COMING SOON badge, teaser copy, no outbound link.
+3. **About the studio**: qualitative copy only (e.g. "Built for Stake Engine. Two
    titles, one growing lineup."). No numeric claims.
-4. **Footer** — copyright, placeholder contact/social links.
+4. **Footer**: copyright, placeholder contact/social links.
 
 ## Deployment & SSL
 
