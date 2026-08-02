@@ -618,6 +618,11 @@ a {
   background: var(--color-bg-alt);
 }
 
+.feedback {
+  padding: var(--space-6) var(--space-3);
+  background: var(--color-bg-alt);
+}
+
 .odds__grid {
   display: grid;
   grid-template-columns: 0.95fr 1.05fr;
@@ -728,6 +733,103 @@ a {
   color: var(--color-text-muted);
   margin-top: var(--space-2);
   font-size: 0.8rem;
+}
+
+.feedback__head {
+  max-width: 42rem;
+  margin: 0 auto var(--space-5);
+  text-align: center;
+}
+
+.feedback__eyebrow {
+  font-family: var(--font-body);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-cyan);
+  font-size: 0.8rem;
+  margin-bottom: var(--space-2);
+}
+
+.feedback__intro {
+  color: var(--color-text-muted);
+}
+
+.feedback__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-4);
+  max-width: 72rem;
+  margin: 0 auto var(--space-4);
+}
+
+.feedback__card {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.feedback__mark {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  line-height: 1;
+  color: var(--color-cyan);
+  opacity: 0.5;
+  margin-bottom: var(--space-2);
+}
+
+.feedback__text {
+  color: var(--color-text);
+  line-height: 1.6;
+  margin-bottom: var(--space-3);
+  flex-grow: 1;
+}
+
+.feedback__role {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  padding-top: var(--space-2);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.feedback__stat {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.feedback__stat-label {
+  display: inline-block;
+  border: 1px solid var(--color-cyan);
+  color: var(--color-cyan);
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.feedback__stat-value {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-magenta);
+}
+
+.feedback__stat-note {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
 }
 
 @media (max-width: 768px) {
@@ -877,6 +979,12 @@ a {
 
 @media (max-width: 768px) {
   .odds__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .feedback__grid {
     grid-template-columns: 1fr;
   }
 }
