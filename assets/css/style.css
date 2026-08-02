@@ -65,6 +65,7 @@ a {
 .hero {
   position: relative;
   min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -87,8 +88,8 @@ a {
 }
 
 @keyframes grid-move {
-  from { background-position: 0 0; }
-  to { background-position: 0 60px; }
+  from { transform: perspective(500px) rotateX(60deg) translateY(0); }
+  to { transform: perspective(500px) rotateX(60deg) translateY(60px); }
 }
 
 .hero__glow {
@@ -129,21 +130,27 @@ a {
   text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
 }
 
-.hero__title.glitch::before,
-.hero__title.glitch::after {
+.hero__title .glitch {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero__title .glitch::before,
+.hero__title .glitch::after {
   content: attr(data-text);
   position: absolute;
   inset: 0;
   opacity: 0;
 }
 
-.hero__title.glitch::before {
+.hero__title .glitch::before {
   color: var(--color-cyan);
   animation: glitch-shift 3.5s infinite;
   left: 2px;
 }
 
-.hero__title.glitch::after {
+.hero__title .glitch::after {
   color: var(--color-magenta);
   animation: glitch-shift 3.5s infinite reverse;
   left: -2px;
@@ -204,8 +211,8 @@ a {
 
 @media (prefers-reduced-motion: reduce) {
   .hero__grid,
-  .hero__title.glitch::before,
-  .hero__title.glitch::after {
+  .hero__title .glitch::before,
+  .hero__title .glitch::after {
     animation: none;
   }
 }
@@ -226,11 +233,11 @@ a {
 
 .game-card {
   position: relative;
+  min-width: 0;
   padding: var(--space-4);
   border-radius: var(--radius-md);
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
   border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(6px);
   transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
@@ -271,11 +278,13 @@ a {
   font-family: var(--font-display);
   font-size: 1.5rem;
   margin-bottom: var(--space-2);
+  overflow-wrap: anywhere;
 }
 
 .game-card__copy {
   color: var(--color-text-muted);
   margin-bottom: var(--space-3);
+  overflow-wrap: anywhere;
 }
 
 .game-card__cta {
@@ -297,36 +306,27 @@ a {
   transform: translateX(4px);
 }
 
-.about {
+.prose-section {
   padding: var(--space-6) var(--space-3);
   text-align: center;
+}
+
+.prose-section__inner {
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.prose-section__copy {
+  color: var(--color-text-muted);
+  font-size: 1.15rem;
+}
+
+.about {
   background: linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
 }
 
-.about__inner {
-  max-width: 42rem;
-  margin: 0 auto;
-}
-
-.about__copy {
-  color: var(--color-text-muted);
-  font-size: 1.15rem;
-}
-
 .studio {
-  padding: var(--space-6) var(--space-3);
-  text-align: center;
   background: var(--color-bg-alt);
-}
-
-.studio__inner {
-  max-width: 42rem;
-  margin: 0 auto;
-}
-
-.studio__copy {
-  color: var(--color-text-muted);
-  font-size: 1.15rem;
 }
 
 .roadmap {
@@ -393,6 +393,7 @@ a {
 .roadmap__label {
   font-family: var(--font-display);
   font-size: 1rem;
+  font-weight: 700;
   letter-spacing: 0.02em;
   color: var(--color-text);
 }
@@ -427,13 +428,13 @@ a {
   color: var(--color-cyan);
 }
 
-.reveal {
+.js .reveal {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.reveal.is-visible {
+.js .reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
 }
@@ -471,7 +472,7 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal {
+  .js .reveal {
     transition: none;
     opacity: 1;
     transform: none;

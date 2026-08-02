@@ -9,11 +9,14 @@
   <meta property="og:description" content="A slot studio building Sweet Bomb or a Wild and Dragon Hoard for the Stake Engine.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://playgambitgames.com">
-  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+  <meta property="og:image" content="https://playgambitgames.com/assets/img/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
   <!-- SECTION: Hero -->
@@ -22,7 +25,7 @@
     <div class="hero__glow" aria-hidden="true"></div>
     <div class="hero__content">
       <p class="hero__eyebrow">Slot Studio</p>
-      <h1 class="hero__title glitch" data-text="GAMBIT GAMES">GAMBIT GAMES</h1>
+      <h1 class="hero__title"><span class="glitch" data-text="GAMBIT GAMES" aria-hidden="true"></span>GAMBIT GAMES</h1>
       <p class="hero__tagline">Engineering the next generation of Stake Engine slots.</p>
       <a href="#games" class="hero__cta">Enter the Lineup</a>
     </div>
@@ -48,10 +51,10 @@
     </div>
   </section>
   <!-- SECTION: About -->
-  <section class="about reveal">
-    <div class="about__inner">
+  <section class="prose-section about reveal">
+    <div class="prose-section__inner">
       <h2 class="section-title">Built for Stake Engine</h2>
-      <p class="about__copy">
+      <p class="prose-section__copy">
         Play Gambit Games is a slot studio focused on tight math, clean frontend
         engineering, and Stake Engine compliance from day one. Two titles, one
         growing lineup.
@@ -60,10 +63,10 @@
   </section>
 
   <!-- SECTION: Studio -->
-  <section class="studio reveal">
-    <div class="studio__inner">
+  <section class="prose-section studio reveal">
+    <div class="prose-section__inner">
       <h2 class="section-title">The Studio</h2>
-      <p class="studio__copy">
+      <p class="prose-section__copy">
         We started Play Gambit Games because we wanted to build the games
         we would actually want to play: fair math, honest volatility, and
         frontend work that does not cut corners. Every title we ship carries
@@ -97,11 +100,11 @@
 
   <!-- SECTION: Footer -->
   <footer class="footer">
-    <p class="footer__copy">&copy; <span id="year"></span> Play Gambit Games</p>
+    <p class="footer__copy">&copy; <span id="year">2026</span> Play Gambit Games</p>
     <div class="footer__links">
       <a href="mailto:hello@playgambitgames.com">Contact</a>
     </div>
   </footer>
-  <script src="assets/js/main.js" defer></script>
+  <script src="/assets/js/main.js" defer></script>
 </body>
 </html>

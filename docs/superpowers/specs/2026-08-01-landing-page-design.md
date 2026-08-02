@@ -72,7 +72,9 @@ hero), so there's no jarring transition between sections:
    - *Dragon Hoard*: COMING SOON badge, teaser copy, no outbound link.
 3. **About the studio**: qualitative copy only (e.g. "Built for Stake Engine. Two
    titles, one growing lineup."). No numeric claims.
-4. **Footer**: copyright, placeholder contact/social links.
+4. **Studio**: short studio-story/mission copy. No invented team details (names, headcount, history dates). Added after initial build, per user request for more than three content sections.
+5. **Roadmap**: three-step timeline (Sweet Bomb or a Wild: live, Dragon Hoard: in development, Next Title: in the pipeline). No invented dates or unannounced titles. Added alongside Studio.
+6. **Footer**: copyright, placeholder contact/social links.
 
 ## Deployment & SSL
 
