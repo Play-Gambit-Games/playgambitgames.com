@@ -613,6 +613,123 @@ a {
   transform: translateY(0);
 }
 
+.odds {
+  padding: var(--space-6) var(--space-3);
+  background: var(--color-bg-alt);
+}
+
+.odds__grid {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: var(--space-5);
+  align-items: start;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.odds__title {
+  font-family: var(--font-display);
+  text-align: left;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  letter-spacing: 0.06em;
+  color: var(--color-text);
+  margin-bottom: var(--space-3);
+}
+
+.odds__copy p {
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  margin-bottom: var(--space-3);
+}
+
+.odds__copy p strong {
+  color: var(--color-text);
+}
+
+.odds__picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+}
+
+.odds__picker-btn {
+  font-family: var(--font-body);
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text-muted);
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all var(--transition-base);
+}
+
+.odds__picker-btn:hover {
+  border-color: var(--color-cyan);
+}
+
+.odds__picker-btn.is-active {
+  border-color: var(--color-cyan);
+  background: var(--color-cyan);
+  color: var(--color-bg);
+}
+
+.odds__picker-btn:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
+.odds__picker-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-left: var(--space-1);
+}
+
+.odds__chart-card {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.odds__chart-card canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.odds__chart-stats {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.odds__stat-k {
+  display: block;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.odds__stat-v {
+  font-family: var(--font-display);
+  color: var(--color-cyan);
+  font-weight: 700;
+}
+
+.odds__chart-caption {
+  color: var(--color-text-muted);
+  margin-top: var(--space-2);
+  font-size: 0.8rem;
+}
+
 @media (max-width: 768px) {
   .nav__links {
     display: none;
@@ -670,5 +787,11 @@ a {
   .js .reveal {
     opacity: 1;
     transform: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .odds__grid {
+    grid-template-columns: 1fr;
   }
 }
