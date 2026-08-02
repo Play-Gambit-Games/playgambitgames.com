@@ -1,6 +1,6 @@
 # playgambitgames.com
 
-Marketing landing page for Play Gambit Games, a slot studio building titles
+Marketing landing page for Gambit Games, a slot studio building titles
 for the Stake Engine.
 
 Static HTML/CSS/JS, no build step, deployed via GitHub Pages.
