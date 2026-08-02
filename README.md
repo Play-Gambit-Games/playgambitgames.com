@@ -7,7 +7,7 @@ Static HTML/CSS/JS, no build step, deployed via GitHub Pages.
 
 ## Local preview
 
-Open `index.html` directly in a browser, or serve it locally:
+Asset paths are root-absolute, so the page must be served, not opened via `file://`:
 
     python3 -m http.server 8080
 
