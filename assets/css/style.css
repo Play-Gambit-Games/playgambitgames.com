@@ -134,6 +134,7 @@ a {
   content: attr(data-text);
   position: absolute;
   inset: 0;
+  opacity: 0;
 }
 
 .hero__title.glitch::before {
@@ -149,10 +150,26 @@ a {
 }
 
 @keyframes glitch-shift {
-  0%, 92%, 100% { clip-path: inset(0 0 0 0); transform: translate(0, 0); }
-  93% { clip-path: inset(10% 0 60% 0); transform: translate(-3px, 2px); }
-  95% { clip-path: inset(60% 0 10% 0); transform: translate(3px, -1px); }
-  97% { clip-path: inset(30% 0 40% 0); transform: translate(-2px, 0); }
+  0%, 92%, 100% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+    transform: translate(0, 0);
+  }
+  93% {
+    opacity: 1;
+    clip-path: inset(10% 0 60% 0);
+    transform: translate(-3px, 2px);
+  }
+  95% {
+    opacity: 1;
+    clip-path: inset(60% 0 10% 0);
+    transform: translate(3px, -1px);
+  }
+  97% {
+    opacity: 0;
+    clip-path: inset(30% 0 40% 0);
+    transform: translate(-2px, 0);
+  }
 }
 
 .hero__tagline {
