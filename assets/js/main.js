@@ -102,3 +102,16 @@ if ('IntersectionObserver' in window) {
 
   drawChart('1000');
 })();
+
+(function () {
+  const form = document.getElementById('integrate-form');
+  if (!form) return;
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const email = document.getElementById('integrate-email').value;
+    const studio = document.getElementById('integrate-studio').value;
+    const subject = encodeURIComponent('Integration Inquiry');
+    const body = encodeURIComponent('Studio/Operator: ' + studio + '\nEmail: ' + email);
+    window.location.href = 'mailto:hello@playgambitgames.com?subject=' + subject + '&body=' + body;
+  });
+})();
