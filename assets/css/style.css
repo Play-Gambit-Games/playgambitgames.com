@@ -265,6 +265,50 @@ a {
   }
 }
 
+.glitch-heading {
+  position: relative;
+}
+
+.glitch-heading .glitch {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.glitch-heading .glitch::before,
+.glitch-heading .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.glitch-heading .glitch::before {
+  color: var(--color-cyan);
+  left: 2px;
+}
+
+.glitch-heading .glitch::after {
+  color: var(--color-magenta);
+  left: -2px;
+}
+
+.glitch-heading .glitch--twoline::before,
+.glitch-heading .glitch--twoline::after {
+  content: attr(data-text-l1) '\A' attr(data-text-l2);
+  white-space: pre;
+}
+
+.js .reveal.is-visible .glitch-heading .glitch::before,
+.glitch-heading:hover .glitch::before {
+  animation: glitch-shift 3.5s infinite;
+}
+
+.js .reveal.is-visible .glitch-heading .glitch::after,
+.glitch-heading:hover .glitch::after {
+  animation: glitch-shift 3.5s infinite reverse;
+}
+
 .hero__tagline {
   margin-top: var(--space-2);
   color: var(--color-text-muted);
@@ -299,7 +343,11 @@ a {
   .hero__grid,
   .hero__glow,
   .hero__title .glitch::before,
-  .hero__title .glitch::after {
+  .hero__title .glitch::after,
+  .js .reveal.is-visible .glitch-heading .glitch::before,
+  .js .reveal.is-visible .glitch-heading .glitch::after,
+  .glitch-heading:hover .glitch::before,
+  .glitch-heading:hover .glitch::after {
     animation: none;
   }
 }
