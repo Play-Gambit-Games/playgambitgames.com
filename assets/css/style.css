@@ -864,6 +864,11 @@ a {
   color: var(--color-magenta);
 }
 
+.feedback__stat-note {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
 .compliance__lead {
   color: var(--color-text-muted);
   line-height: 1.6;
@@ -989,6 +994,8 @@ a {
 
 .js .compliance.is-visible .compliance__chip:hover {
   transform: translateY(-3px);
+  transition: transform var(--transition-base), border-color var(--transition-base);
+  transition-delay: 0s;
 }
 
 .compliance__chip-code {
@@ -1103,6 +1110,7 @@ a {
     transform: none;
   }
 
+  .js .compliance.is-visible .compliance__chip:hover,
   .compliance__chip:hover {
     transform: none;
   }
