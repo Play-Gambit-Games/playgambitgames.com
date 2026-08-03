@@ -201,30 +201,12 @@ a {
   text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
 }
 
-.hero__title .glitch {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.hero__title .glitch::before,
-.hero__title .glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-}
-
-.hero__title .glitch::before {
-  color: var(--color-cyan);
+.hero__title.glitch-heading .glitch::before {
   animation: glitch-shift 3.5s infinite;
-  left: 2px;
 }
 
-.hero__title .glitch::after {
-  color: var(--color-magenta);
+.hero__title.glitch-heading .glitch::after {
   animation: glitch-shift 3.5s infinite reverse;
-  left: -2px;
 }
 
 @keyframes glitch-shift {
@@ -299,13 +281,21 @@ a {
   white-space: pre;
 }
 
-.js .reveal.is-visible .glitch-heading .glitch::before,
-.glitch-heading:hover .glitch::before {
+.js .reveal.is-visible .glitch-heading .glitch::before {
+  animation: glitch-shift 3.5s 1;
+}
+
+.js .reveal.is-visible .glitch-heading .glitch::after {
+  animation: glitch-shift 3.5s 1 reverse;
+}
+
+.glitch-heading:hover .glitch::before,
+.js .reveal.is-visible .glitch-heading:hover .glitch::before {
   animation: glitch-shift 3.5s infinite;
 }
 
-.js .reveal.is-visible .glitch-heading .glitch::after,
-.glitch-heading:hover .glitch::after {
+.glitch-heading:hover .glitch::after,
+.js .reveal.is-visible .glitch-heading:hover .glitch::after {
   animation: glitch-shift 3.5s infinite reverse;
 }
 
@@ -342,12 +332,14 @@ a {
 @media (prefers-reduced-motion: reduce) {
   .hero__grid,
   .hero__glow,
-  .hero__title .glitch::before,
-  .hero__title .glitch::after,
+  .hero__title.glitch-heading .glitch::before,
+  .hero__title.glitch-heading .glitch::after,
   .js .reveal.is-visible .glitch-heading .glitch::before,
   .js .reveal.is-visible .glitch-heading .glitch::after,
   .glitch-heading:hover .glitch::before,
-  .glitch-heading:hover .glitch::after {
+  .js .reveal.is-visible .glitch-heading:hover .glitch::before,
+  .glitch-heading:hover .glitch::after,
+  .js .reveal.is-visible .glitch-heading:hover .glitch::after {
     animation: none;
   }
 }
