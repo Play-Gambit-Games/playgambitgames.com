@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<!--
+			Static demo harness. Injected by demo/scripts/build-demo.mjs into a copy of the game
+			build; it is not part of the game and is absent from every other build.
+
+			demo-rgs.js is a CLASSIC script and must stay one: it has to run before the SvelteKit
+			bundle, which is loaded as a module and therefore deferred. It writes the launch
+			params into the URL and patches fetch, both of which have to happen before
+			state-shared snapshots window.location.search at module init.
+		-->
+		<script>window.__DEMO_CONFIG__ = {"gameId":"dragonhoard","gameTitle":"Dragonhoard","currency":"USD","startingBalance":1000000000,"modes":["base","bonus"],"stats":{"rtp":0.9599999993266806,"hitRate":0.2907143856919227,"maxWin":10000,"sampledRounds":21467,"libraryRounds":350000}};</script>
+		<script src="./demo/demo-rgs.js"></script>
+		<script src="./demo/demo-badge.js" defer></script>
+
+		<meta charset="utf-8" />
+		<link rel="icon" href="./favicon.svg" />
+		<!--
+			initial-scale=1 pins the initial zoom: without it older iOS Safari re-zooms on
+			orientation change and the canvas comes back the wrong size. viewport-fit=cover lets
+			the page extend under the notch/home indicator and is what makes the env(safe-area-*)
+			insets resolve to non-zero at all.
+		-->
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, viewport-fit=cover"
+		/>
+		<script>
+			// Explicit opt-in read by packages/pixi-svelte's preloadFont(). Dragonhoard self-hosts
+			// proxima-nova (see src/styles/modalTheme.scss), so this tells the shared loader to
+			// watch the local @font-face instead of fetching from Typekit. This must run before
+			// preloadFont() is called (it is, since inline <head> scripts execute before the
+			// SvelteKit app bundle mounts), and no other app sets this flag.
+			window.__SELF_HOSTED_FONTS__ = true;
+		</script>
+		<!--
+			Boot curtain, inlined into the document on purpose.
+
+			LoadingCurtain.svelte's whole reason to exist is to paint on the first frame, and as a
+			Svelte component it structurally cannot: nothing it renders exists until the app bundle
+			has downloaded, parsed and mounted. On a 400kbps connection that measured at 9.6s of
+			black screen. This markup and these ~1.5KB of CSS are the same design expressed in
+			static HTML, so they paint from the first packets of the document, before a single byte
+			of JS or of the game's assets.
+
+			Text is hardcoded rather than read from game/theme.ts because there is no JS yet; it
+			mirrors identity.title / identity.tagline and must be kept in step with them. The font
+			stack is fonts.display, which resolves to the Georgia/serif fallback for the first
+			moment and upgrades silently once Cinzel loads.
+
+			LoadingCurtain.svelte adopts this element on mount (progress, then dismissal) instead
+			of rendering a second copy of it -- see that file.
+		-->
+		<style>
+			#boot-curtain {
+				position: fixed;
+				inset: 0;
+				z-index: 998; /* below the Stake platform loader (999), above the canvas */
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				overflow: hidden;
+				/* palette.obsidianCavern -> obsidianDeep: the cave's own deep blue, never neutral black. */
+				background: radial-gradient(ellipse at 50% 45%, #0b1b2a 0%, #050e16 55%, #030910 100%);
+				font-family: 'Cinzel', 'Trajan Pro', Georgia, serif;
+				opacity: 1;
+				transition: opacity 320ms ease-out;
+			}
+			#boot-curtain.is-hidden {
+				opacity: 0;
+				pointer-events: none;
+			}
+			#boot-curtain .glow {
+				position: absolute;
+				width: 120vmin;
+				height: 120vmin;
+				border-radius: 50%;
+				background: radial-gradient(circle, rgba(53, 214, 208, 0.13) 0%, rgba(53, 214, 208, 0) 62%);
+				animation: boot-breathe 4.5s ease-in-out infinite;
+			}
+			@keyframes boot-breathe {
+				0%, 100% { transform: scale(0.92); opacity: 0.65; }
+				50% { transform: scale(1.06); opacity: 1; }
+			}
+			#boot-curtain .content {
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				padding: 0 6vw;
+				max-width: 640px;
+				width: 100%;
+			}
+			#boot-curtain h1 {
+				margin: 0;
+				font-weight: 600;
+				/* Scales with the viewport so it reads on a 320px phone and a 2560px ultrawide alike. */
+				font-size: clamp(1.6rem, 7vmin, 3.4rem);
+				letter-spacing: 0.14em;
+				text-align: center;
+				line-height: 1.1;
+				background: linear-gradient(180deg, #ffe9a8 0%, #ffd873 45%, #e7c25b 100%);
+				-webkit-background-clip: text;
+				background-clip: text;
+				color: #ffd873;
+				text-shadow: 0 0 28px rgba(255, 216, 115, 0.28);
+			}
+			/*
+				Only make the fill transparent where background-clip:text actually works. Older
+				WebKit/Android builds that do not support it would otherwise render an invisible
+				title on the cavern gradient, which is exactly the blank screen this element exists
+				to prevent; they keep the flat gold `color` above instead.
+			*/
+			@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+				#boot-curtain h1 { color: transparent; }
+			}
+			#boot-curtain .rule {
+				width: min(60%, 260px);
+				height: 2px;
+				margin: clamp(10px, 2.4vmin, 20px) 0 clamp(8px, 1.8vmin, 14px);
+				background: linear-gradient(90deg, rgba(53, 214, 208, 0) 0%, #35d6d0 50%, rgba(53, 214, 208, 0) 100%);
+			}
+			#boot-curtain .tagline {
+				margin: 0 0 clamp(16px, 4vmin, 34px);
+				font-size: clamp(0.62rem, 2.1vmin, 0.9rem);
+				letter-spacing: 0.34em;
+				text-indent: 0.34em; /* balances the trailing letter-space so the line stays centred */
+				color: #ffb46b;
+				text-align: center;
+			}
+			#boot-curtain .track {
+				width: min(78%, 300px);
+				height: 4px;
+				border-radius: 2px;
+				background: rgba(231, 194, 91, 0.16);
+				overflow: hidden;
+			}
+			#boot-curtain .fill {
+				height: 100%;
+				width: 0%;
+				border-radius: 2px;
+				background: linear-gradient(90deg, #e7c25b 0%, #ffd873 60%, #ffe9a8 100%);
+				box-shadow: 0 0 12px rgba(255, 216, 115, 0.55);
+				transition: width 220ms ease-out;
+			}
+			@media (prefers-reduced-motion: reduce) {
+				#boot-curtain .glow { animation: none; }
+				#boot-curtain .fill { transition: none; }
+			}
+		</style>
+		
+		<link href="./_app/immutable/assets/bundle.xUfMqHOR.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/bundle.691zdmo3.js">
+	</head>
+	<body style="margin: 0; padding: 0; overflow: hidden; background-color: black">
+		<div id="boot-curtain">
+			<div class="glow"></div>
+			<div class="content">
+				<h1>DRAGONHOARD</h1>
+				<div class="rule"></div>
+				<p class="tagline">CLUSTER PAYS + TUMBLE</p>
+				<div
+					class="track"
+					role="progressbar"
+					aria-valuenow="0"
+					aria-valuemin="0"
+					aria-valuemax="100"
+					aria-label="Loading"
+				>
+					<div class="fill"></div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<script>
+				{
+					__sveltekit_1p5hxdo = {
+						base: new URL(".", location).pathname.slice(0, -1)
+					};
+
+					const element = document.currentScript.parentElement;
+
+					import("./_app/immutable/bundle.691zdmo3.js").then((app) => {
+						app.start(element)
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>

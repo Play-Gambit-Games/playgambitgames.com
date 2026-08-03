@@ -1,0 +1,103 @@
+{
+	"frames": {
+		"1.png": {
+			"frame": {
+				"x": 0,
+				"y": 0,
+				"w": 480,
+				"h": 480
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 480,
+				"h": 480
+			},
+			"sourceSize": {
+				"w": 480,
+				"h": 480
+			}
+		},
+		"2.png": {
+			"frame": {
+				"x": 480,
+				"y": 0,
+				"w": 480,
+				"h": 480
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 480,
+				"h": 480
+			},
+			"sourceSize": {
+				"w": 480,
+				"h": 480
+			}
+		},
+		"3.png": {
+			"frame": {
+				"x": 0,
+				"y": 480,
+				"w": 480,
+				"h": 480
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 480,
+				"h": 480
+			},
+			"sourceSize": {
+				"w": 480,
+				"h": 480
+			}
+		},
+		"4.png": {
+			"frame": {
+				"x": 480,
+				"y": 480,
+				"w": 480,
+				"h": 480
+			},
+			"rotated": false,
+			"trimmed": false,
+			"spriteSourceSize": {
+				"x": 0,
+				"y": 0,
+				"w": 480,
+				"h": 480
+			},
+			"sourceSize": {
+				"w": 480,
+				"h": 480
+			}
+		}
+	},
+	"animations": {
+		"coin": [
+			"1.png",
+			"2.png",
+			"3.png",
+			"4.png"
+		]
+	},
+	"meta": {
+		"app": "dragonhoard",
+		"version": "1.1",
+		"image": "treasure_coins.webp",
+		"format": "RGBA8888",
+		"size": {
+			"w": 960,
+			"h": 960
+		},
+		"scale": "2"
+	}
+}
