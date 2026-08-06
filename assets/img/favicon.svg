@@ -1,11 +1,11 @@
+<!-- Gambit Games mark: the "G" from the GAMBIT wordmark, traced from the studio
+     logo (Logo-2k.png) and condensed for small sizes: 45% of the italic shear
+     removed and the top arm pulled in 12% (1.64:1 -> 1.38:1), with the
+     horizontal bands snapped to the 16px pixel grid. Colours sampled from the
+     source: ground #05060b, letterform #f7f5f7, accent wedge #d4322b. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00f0ff"/>
-      <stop offset="100%" stop-color="#ff2fd0"/>
-    </linearGradient>
-  </defs>
   <rect width="64" height="64" rx="14" fill="#05060b"/>
-  <path d="M32 8 L54 32 L32 56 L10 32 Z" fill="none" stroke="url(#g)" stroke-width="4"/>
-  <circle cx="32" cy="32" r="8" fill="url(#g)"/>
+  <polygon points="18.15,12 60,12 51.89,20 25.13,20 23.96,20.72 22.34,22.76 19.36,39.9 20.83,41.21 26.14,41.21 13.87,52 4,52 10.34,18.05 15.92,12.92" fill="#f7f5f7"/>
+  <polygon points="34.93,28 54.65,28.12 44.99,52 20.32,52 28.78,44.46 37.76,44.59 40.74,36 28.76,36" fill="#f7f5f7"/>
+  <polygon points="28.78,44.46 37.65,44.59 34.73,51.87 20.32,52" fill="#d4322b"/>
 </svg>
