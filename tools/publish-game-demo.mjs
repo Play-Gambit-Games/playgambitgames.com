@@ -40,6 +40,7 @@ import {
 	cpSync,
 	mkdirSync,
 } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -160,9 +161,24 @@ html = html.replace(
 writeFileSync(indexPath, html);
 
 writeFileSync(path.join(stageDir, '.nojekyll'), '');
+
+/* Record which game commit this build came from. The daily watcher compares it against the game
+   repo's origin/main to decide whether the demo is stale, so without it there is no way to tell
+   what is actually deployed short of diffing bundle hashes. */
+let sourceCommit = 'unknown';
+try {
+	sourceCommit = execFileSync('git', ['-C', srcDir, 'rev-parse', 'HEAD'], {
+		encoding: 'utf8',
+		stdio: ['ignore', 'pipe', 'ignore'],
+	}).trim();
+} catch {
+	// Not a git checkout, or git is unavailable. The marker still identifies the source path.
+}
+
 writeFileSync(
 	path.join(stageDir, MARKER),
-	`${slug} published from ${srcDir} by tools/publish-game-demo.mjs\n`,
+	`${slug} published from ${srcDir} by tools/publish-game-demo.mjs\n` +
+		`source-commit: ${sourceCommit}\n`,
 );
 
 // ------------------------------------------------------------------ promote
