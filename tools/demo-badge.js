@@ -245,16 +245,27 @@
 		});
 	}
 
+	/* Returning focus to the pill is correct after a keyboard interaction and wrong after a mouse
+	   one. A visitor who clicks the pill and clicks away leaves focus parked on it, and because
+	   the badge claims Space whenever the badge is focused, their next Space reopens the panel
+	   instead of spinning. Space is the control the game's HUD advertises, so it has to keep
+	   working for someone who never touched the keyboard. */
+	var openedByKeyboard = false;
+
 	function closePanel() {
 		if (!scrim) return;
 		root.removeChild(scrim);
 		scrim = null;
 		setBackgroundInert(false);
 		pill.setAttribute('aria-expanded', 'false');
-		pill.focus();
+		if (openedByKeyboard) pill.focus();
+		else pill.blur();
 	}
 
-	pill.addEventListener('click', openPanel);
+	pill.addEventListener('click', function () {
+		openedByKeyboard = false;
+		openPanel();
+	});
 
 	function aimedAtBadge(event) {
 		if (typeof event.composedPath !== 'function') return false;
@@ -279,13 +290,19 @@
 	 * Listening at the document in the CAPTURE phase is what makes that work: capture reaches
 	 * the document before the target, so stopping here means the game's window listener never
 	 * runs and never gets to call preventDefault. Everything else is left alone.
+	 *
+	 * Enter is claimed on the same terms. It is usually safe, but the game's celebration
+	 * overlays bind Space AND Enter with the same unconditional preventDefault, so while one of
+	 * those is up an Enter aimed at this panel would advance the overlay instead of closing it.
+	 * That is the identical failure, reached through a different key.
 	 */
 	document.addEventListener(
 		'keydown',
 		function (event) {
 			var isSpace = event.code === 'Space' || event.key === ' ';
+			var isEnter = event.key === 'Enter';
 			var isEscape = event.key === 'Escape';
-			if (!isSpace && !isEscape) return;
+			if (!isSpace && !isEnter && !isEscape) return;
 
 			if (isEscape) {
 				if (!scrim) return;
@@ -299,8 +316,12 @@
 			event.stopPropagation();
 			event.preventDefault();
 			if (event.repeat) return;
-			if (!scrim) openPanel();
-			else if (aimedAtBadge(event)) closePanel();
+			if (!scrim) {
+				openedByKeyboard = true;
+				openPanel();
+			} else if (aimedAtBadge(event)) {
+				closePanel();
+			}
 		},
 		true,
 	);
