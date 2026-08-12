@@ -372,7 +372,7 @@
     .int-input {
       border:1px solid #2b3036; background:#0e1013; border-radius:3px; padding:14px 18px;
       font-family:'JetBrains Mono',monospace; font-size:13px; color:#e9ebed;
-      min-width:260px; outline:none;
+      min-width:260px;
     }
     .int-input:focus { border-color:#6a7178; }
     .int-input:focus-visible { border-color:#6a7178; }
@@ -1068,7 +1068,7 @@
       return Array.from({ length: 36 }, function (_, i) {
         var pct = 82 + (i / 35) * 28;
         var x = (pct - 96) / sigma;
-        var h = Math.max(1.5, Math.exp(-x * x / 2) * 100 * (0.9 + Math.random() * 0.16));
+        var h = Math.min(100, Math.max(1.5, Math.exp(-x * x / 2) * 100 * (0.9 + Math.random() * 0.16)));
         var near = Math.abs(pct - 96) <= sigma * 0.8;
         return {
           h: h.toFixed(1) + '%',
