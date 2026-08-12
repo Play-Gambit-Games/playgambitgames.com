@@ -74,7 +74,9 @@
     @keyframes drift { 0%,100% { transform:translate3d(0,0,0) scale(1); } 50% { transform:translate3d(-3%,2%,0) scale(1.08); } }
     @keyframes rise { from { opacity:0; transform:translateY(26px); } to { opacity:1; transform:translateY(0); } }
     @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.25; } }
-    @keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+    /* -25% is one of the ticker rail's four identical copies, so the wrap lands
+       on itself. Tied to the copy count in the markup: 100 divided by copies. */
+    @keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-25%); } }
     @keyframes growbar { from { transform:scaleY(.04); } to { transform:scaleY(1); } }
     @keyframes pop { from { opacity:0; transform:scale(.5); } to { opacity:1; transform:scale(1); } }
     @keyframes sweep { 0% { transform:translateX(-100%); } 100% { transform:translateX(100%); } }
@@ -627,7 +629,15 @@
       </div>
     </section>
 
-    <!-- SECTION: Ticker -->
+    <!-- SECTION: Ticker
+         Four copies of the same nine items. The wrap shifts the rail by exactly
+         one copy, so the copies sitting behind that shift are what covers the
+         viewport during the jump: three copies of a rail measuring about 2746px,
+         so roughly 8.2k CSS px. Two copies covered only 2746px and left bare
+         background past about 2747px, which is an ordinary 3440 ultrawide, or a
+         1440 window at 50% browser zoom.
+         Changing the number of copies means changing the shift in
+         @keyframes marquee to match: it is 100 divided by the copy count. -->
     <div class="ticker">
       <div class="ticker-rail">
         <div class="ticker-item"><span>Stake Engine RGS</span><span class="ticker-dot" aria-hidden="true"></span></div>
@@ -639,6 +649,24 @@
         <div class="ticker-item"><span>A pipeline of games</span><span class="ticker-dot" aria-hidden="true"></span></div>
         <div class="ticker-item"><span>A professional team</span><span class="ticker-dot" aria-hidden="true"></span></div>
         <div class="ticker-item"><span>One integration, every release</span><span class="ticker-dot" aria-hidden="true"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>Stake Engine RGS</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>Replay mode on every round</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>±0.5% RTP tolerance</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>Deterministic RNG</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>6×5 tumbling reels</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>Bombs to x250 each</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>A pipeline of games</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>A professional team</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>One integration, every release</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>Stake Engine RGS</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>Replay mode on every round</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>±0.5% RTP tolerance</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>Deterministic RNG</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>6×5 tumbling reels</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>Bombs to x250 each</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>A pipeline of games</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>A professional team</span><span class="ticker-dot"></span></div>
+        <div class="ticker-item" aria-hidden="true"><span>One integration, every release</span><span class="ticker-dot"></span></div>
         <div class="ticker-item" aria-hidden="true"><span>Stake Engine RGS</span><span class="ticker-dot"></span></div>
         <div class="ticker-item" aria-hidden="true"><span>Replay mode on every round</span><span class="ticker-dot"></span></div>
         <div class="ticker-item" aria-hidden="true"><span>±0.5% RTP tolerance</span><span class="ticker-dot"></span></div>
@@ -1119,12 +1147,21 @@
       }
     }
 
+    // Return percentages are quoted to a tenth, with a trailing zero trimmed so
+    // the round numbers stay round. Rounding to whole points printed the
+    // 100,000 sample's upper bound of 99.6 as a flat "100%", which reads as
+    // getting your stake back on the one panel whose job is to say you do not.
+    // Rounding can only ever flatter here, so it is not done at all.
+    function pct(n) {
+      return n.toFixed(1).replace(/\.0$/, '') + '%';
+    }
+
     function paintMeta() {
       var w = spread();
       var label = document.querySelector('[data-sample-label]');
       var range = document.querySelector('[data-range]');
       if (label) label.textContent = sample.toLocaleString('en-US');
-      if (range) range.textContent = (96 - w).toFixed(0) + '% to ' + (96 + w).toFixed(0) + '%';
+      if (range) range.textContent = pct(96 - w) + ' to ' + pct(96 + w);
     }
 
     // The end labels come off the same constant the bars are plotted on, so they
@@ -1134,8 +1171,8 @@
     function paintAxis() {
       var lo = document.querySelector('[data-axis-lo]');
       var hi = document.querySelector('[data-axis-hi]');
-      if (lo) lo.textContent = (96 - PLOT).toFixed(0) + '%';
-      if (hi) hi.textContent = (96 + PLOT).toFixed(0) + '%';
+      if (lo) lo.textContent = pct(96 - PLOT);
+      if (hi) hi.textContent = pct(96 + PLOT);
     }
 
     function paintPicker() {
