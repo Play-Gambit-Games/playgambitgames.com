@@ -997,9 +997,12 @@
     'use strict';
 
     // Symbols are sliced live out of the real in-game capture (1200x750).
-    // Board interior measured at x 402->1153, y 136->744; 6 x 5 cells.
+    // x/y is the top-left of cell (0,0), cw/ch the cell pitch, both measured off
+    // that JPEG: symbol centres fit to a line give a pitch of 81.9 x 82.0 and a
+    // grid running x 354.3->845.7, y 219.2->629.2. Re-measure these whenever the
+    // capture is retaken, or the reels slice seams and half-symbols instead.
     var CAPTURE = '/assets/img/sweet-bomb-live-capture.jpg';
-    var BOARD = { x: 314, y: 108, cw: 95.2, ch: 94, cols: 6, rows: 5 };
+    var BOARD = { x: 354.3, y: 219.2, cw: 81.9, ch: 82, cols: 6, rows: 5 };
     var SPREAD = { 100: 26, 1000: 14, 10000: 7.5, 100000: 3.6 };
 
     // The design exposes a Slow/Normal/Fast reel speed prop. The real site has
