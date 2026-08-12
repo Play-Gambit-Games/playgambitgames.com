@@ -781,7 +781,7 @@
             <div class="bar" data-bar style="height:8.7%;background:linear-gradient(180deg,#cfd4d8,#4b5157);transition-delay:0.420s"></div>
           </div>
           <div class="chart-axis">
-            <span data-axis-lo>82%</span><span class="chart-axis-mid">96% theoretical</span><span data-axis-hi>110%</span>
+            <span data-axis-lo>70%</span><span class="chart-axis-mid">96% theoretical</span><span data-axis-hi>122%</span>
           </div>
           <div class="chart-note">Illustrative of typical slot variance patterns, not a live simulation of any Gambit Games title.</div>
         </div>
@@ -1016,6 +1016,12 @@
     var BOARD = { x: 354.3, y: 219.2, cw: 81.9, ch: 82, cols: 6, rows: 5 };
     var SPREAD = { 100: 26, 1000: 14, 10000: 7.5, 100000: 3.6 };
 
+    // Half-width of the plotted window, in points either side of 96%. It is the
+    // widest typical range on offer, so every sample's curve fits inside its own
+    // plot, and it is read off SPREAD rather than typed in, so a new sample
+    // cannot leave the axis behind.
+    var PLOT = Object.keys(SPREAD).reduce(function (m, k) { return Math.max(m, SPREAD[k]); }, 0);
+
     // The design exposes a Slow/Normal/Fast reel speed prop. The real site has
     // no control for it, so it is pinned to the 'Normal' factor.
     var REEL_SPEED = 1;
@@ -1082,15 +1088,16 @@
 
     function spread() { return SPREAD[sample]; }
 
-    // The plot spans exactly the range the caption quotes, 96% plus or minus the
-    // spread, so the axis labels and the caption can never disagree. A fixed
-    // 82-110 axis truncated the 100-spin curve at 47% height on both edges while
-    // the caption beside it claimed 70% to 122%.
+    // The old 82-110 window was narrower than the 100-spin range it was asked to
+    // hold, so that curve ran off both edges at 47% height while the caption
+    // beside it read 70% to 122%. The window is now wide enough for the widest
+    // sample. It deliberately does not follow the picker: a window that rescaled
+    // with the spread would divide it back out and redraw the same bell every
+    // time, and this section asks the reader to watch the spread collapse.
     function makeBars() {
-      var w = spread();
-      var sigma = w / 2.2;
+      var sigma = spread() / 2.2;
       return Array.from({ length: 36 }, function (_, i) {
-        var pct = (96 - w) + (i / 35) * (w * 2);
+        var pct = (96 - PLOT) + (i / 35) * (PLOT * 2);
         var x = (pct - 96) / sigma;
         var h = Math.min(100, Math.max(1.5, Math.exp(-x * x / 2) * 100 * (0.9 + Math.random() * 0.16)));
         var near = Math.abs(pct - 96) <= sigma * 0.8;
@@ -1114,18 +1121,21 @@
 
     function paintMeta() {
       var w = spread();
-      var lo = (96 - w).toFixed(0) + '%';
-      var hi = (96 + w).toFixed(0) + '%';
       var label = document.querySelector('[data-sample-label]');
       var range = document.querySelector('[data-range]');
-      var axisLo = document.querySelector('[data-axis-lo]');
-      var axisHi = document.querySelector('[data-axis-hi]');
       if (label) label.textContent = sample.toLocaleString('en-US');
-      // Caption and axis are painted from the same two strings, so they agree by
-      // construction rather than by keeping two hardcoded numbers in step.
-      if (range) range.textContent = lo + ' to ' + hi;
-      if (axisLo) axisLo.textContent = lo;
-      if (axisHi) axisHi.textContent = hi;
+      if (range) range.textContent = (96 - w).toFixed(0) + '% to ' + (96 + w).toFixed(0) + '%';
+    }
+
+    // The end labels come off the same constant the bars are plotted on, so they
+    // describe the scale underneath them rather than a pair of numbers that has
+    // to be kept in step by hand. The centre label is the theoretical return and
+    // never moves. Painted once: the window does not change with the sample.
+    function paintAxis() {
+      var lo = document.querySelector('[data-axis-lo]');
+      var hi = document.querySelector('[data-axis-hi]');
+      if (lo) lo.textContent = (96 - PLOT).toFixed(0) + '%';
+      if (hi) hi.textContent = (96 + PLOT).toFixed(0) + '%';
     }
 
     function paintPicker() {
@@ -1172,6 +1182,7 @@
     }
 
     renderReels();
+    paintAxis();
     paintBars();
 
     // Motion the user did not ask for: only auto-refresh when motion is welcome.
