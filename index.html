@@ -374,7 +374,7 @@
     }
     .int-card-h3 { margin:0 0 6px; font-family:'Archivo',sans-serif; font-weight:800; font-size:24px; letter-spacing:-.02em; color:#f4f6f8; }
     .int-card-p { margin:0; font-size:15.5px; color:#7c848b; }
-    .int-form { display:flex; gap:10px; align-items:center; }
+    .int-form { display:flex; gap:10px; align-items:center; margin:0; }
     .int-input {
       border:1px solid #2b3036; background:#0e1013; border-radius:3px; padding:14px 18px;
       font-family:'JetBrains Mono',monospace; font-size:13px; color:#e9ebed;
@@ -388,6 +388,16 @@
       cursor:pointer; transition:transform .25s; border:0; white-space:nowrap;
     }
     .int-btn:hover { transform:translateY(-2px); }
+    /* The handoff confirmation is a third child of the card spanning both of its
+       columns, so it can never widen the auto-sized form column. It stays
+       display:none until the mail client is opened, so the card at rest is the
+       design untouched. */
+    .int-status {
+      grid-column:1 / -1; margin:0;
+      font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.6; color:#9aa0a6;
+    }
+    .int-status a { color:#cfd4d8; text-decoration:underline; }
+    .int-status a:hover { color:#ffffff; }
 
     /* ============================================================
        SECTION: Footer
@@ -771,7 +781,7 @@
             <div class="bar" data-bar style="height:8.7%;background:linear-gradient(180deg,#cfd4d8,#4b5157);transition-delay:0.420s"></div>
           </div>
           <div class="chart-axis">
-            <span>82%</span><span class="chart-axis-mid">96% theoretical</span><span>110%</span>
+            <span data-axis-lo>82%</span><span class="chart-axis-mid">96% theoretical</span><span data-axis-hi>110%</span>
           </div>
           <div class="chart-note">Illustrative of typical slot variance patterns, not a live simulation of any Gambit Games title.</div>
         </div>
@@ -963,11 +973,12 @@
             <h3 class="int-card-h3">Request the integration guide</h3>
             <p class="int-card-p">Tell us about your platform and we will follow up with the RGS integration reference and spec sheet.</p>
           </div>
-          <div class="int-form">
+          <form class="int-form" data-int-form action="mailto:hello@playgambitgames.com" method="post" enctype="text/plain">
             <label class="vh" for="int-email">Work email</label>
-            <input class="int-input" id="int-email" type="email" placeholder="you@platform.com" autocomplete="email">
-            <button class="int-btn" type="button">Request</button>
-          </div>
+            <input class="int-input" id="int-email" name="email" type="email" placeholder="you@platform.com" autocomplete="email" required>
+            <button class="int-btn" type="submit">Request</button>
+          </form>
+          <p class="int-status" data-int-status role="status" hidden>Opening your mail app with the request ready to send. If nothing opens, write to <a href="mailto:hello@playgambitgames.com">hello@playgambitgames.com</a> directly.</p>
         </div>
       </div>
     </section>
@@ -1071,11 +1082,15 @@
 
     function spread() { return SPREAD[sample]; }
 
-    // Fixed 82%-110% axis; the drawn distribution narrows as the sample grows.
+    // The plot spans exactly the range the caption quotes, 96% plus or minus the
+    // spread, so the axis labels and the caption can never disagree. A fixed
+    // 82-110 axis truncated the 100-spin curve at 47% height on both edges while
+    // the caption beside it claimed 70% to 122%.
     function makeBars() {
-      var sigma = spread() / 2.2;
+      var w = spread();
+      var sigma = w / 2.2;
       return Array.from({ length: 36 }, function (_, i) {
-        var pct = 82 + (i / 35) * 28;
+        var pct = (96 - w) + (i / 35) * (w * 2);
         var x = (pct - 96) / sigma;
         var h = Math.min(100, Math.max(1.5, Math.exp(-x * x / 2) * 100 * (0.9 + Math.random() * 0.16)));
         var near = Math.abs(pct - 96) <= sigma * 0.8;
@@ -1099,10 +1114,18 @@
 
     function paintMeta() {
       var w = spread();
+      var lo = (96 - w).toFixed(0) + '%';
+      var hi = (96 + w).toFixed(0) + '%';
       var label = document.querySelector('[data-sample-label]');
       var range = document.querySelector('[data-range]');
+      var axisLo = document.querySelector('[data-axis-lo]');
+      var axisHi = document.querySelector('[data-axis-hi]');
       if (label) label.textContent = sample.toLocaleString('en-US');
-      if (range) range.textContent = (96 - w).toFixed(0) + '% to ' + (96 + w).toFixed(0) + '%';
+      // Caption and axis are painted from the same two strings, so they agree by
+      // construction rather than by keeping two hardcoded numbers in step.
+      if (range) range.textContent = lo + ' to ' + hi;
+      if (axisLo) axisLo.textContent = lo;
+      if (axisHi) axisHi.textContent = hi;
     }
 
     function paintPicker() {
@@ -1125,6 +1148,28 @@
         pick(Number(btn.getAttribute('data-sample')));
       });
     });
+
+    // The site is static, so there is nothing to POST to. The request hands off
+    // to the visitor's own mail client with the typed address carried in the
+    // body, which is the only thing this page can honestly promise. Validation
+    // is left to the browser: submit never fires on an empty or malformed
+    // address, so the visitor gets the native message instead of silence.
+    var intForm = document.querySelector('[data-int-form]');
+    if (intForm) {
+      intForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var field = intForm.querySelector('#int-email');
+        var typed = field ? field.value.trim() : '';
+        var body = 'Please send the RGS integration reference and spec sheet.\r\n\r\n'
+          + 'Work email: ' + typed + '\r\n'
+          + 'Platform: \r\n';
+        var status = document.querySelector('[data-int-status]');
+        if (status) status.hidden = false;
+        window.location.href = 'mailto:hello@playgambitgames.com'
+          + '?subject=' + encodeURIComponent('Integration guide request')
+          + '&body=' + encodeURIComponent(body);
+      });
+    }
 
     renderReels();
     paintBars();
