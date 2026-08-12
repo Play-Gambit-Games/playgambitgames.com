@@ -5,9 +5,16 @@
  * Usage:
  *   node tools/publish-game-demo.mjs --src <path to the game's dist> --slug <url segment>
  *
- * The game build is copied in verbatim. The only edit is a script tag appended to <body> that
- * loads demo/badge.js plus the inline window.__DEMO_CONFIG__ that feeds it, so the hosted copy
- * stays byte-identical to the build the studio submits apart from the demo labelling.
+ * The game build is copied in verbatim. Two edits are made to index.html: a script tag appended
+ * to <body> that loads demo/badge.js plus the inline window.__DEMO_CONFIG__ that feeds it, and
+ * the search and social metadata written into <head> by tools/seo-head.mjs. Everything else is
+ * byte-identical to the build the studio submits.
+ *
+ * The head is rewritten rather than left alone because a game build's <head> is written for the
+ * casino iframe it normally runs inside, where nothing crawls it and nothing shares it. Hosted at
+ * a public URL those same defaults are the page's entire search result, and Sweet Bomb's build
+ * shipped a title with an em dash in it and no canonical at all. Hand-fixing the published copy
+ * does not survive the next publish, which is why it happens here.
  *
  * Two things it refuses to publish, both of which would ship a page that works locally and
  * breaks under playgambitgames.com/<slug>/:
@@ -43,6 +50,7 @@ import {
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { injectSeoHead } from './seo-head.mjs';
 
 const TOOLS_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SITE_DIR = path.resolve(TOOLS_DIR, '..');
@@ -158,6 +166,21 @@ html = html.replace(
 	`  <script>window.__DEMO_CONFIG__ = ${configJson};</script>\n` +
 		`    <script src="./demo/badge.js" defer></script>\n  </body>`,
 );
+
+// ------------------------------------------------------------------ write the head metadata
+
+/* After the audit, deliberately, for the same reason the badge is: the audit's job is to judge
+   the build the studio produced, and it cannot do that against a document this script has
+   already been editing. The canonical and og:image this writes are fully qualified
+   https://playgambitgames.com/... URLs, so the root-absolute check above would pass them anyway,
+   but the ordering is what keeps that a property of the metadata rather than a coincidence.
+   See tools/seo-head.mjs for what it writes and tools/demos/<slug>.json for the copy itself. */
+try {
+	html = injectSeoHead(html, { slug, seo: manifest.seo });
+} catch (error) {
+	abort(`the head metadata could not be written:\n${error.message}`);
+}
+
 writeFileSync(indexPath, html);
 
 writeFileSync(path.join(stageDir, '.nojekyll'), '');

@@ -1,6 +1,14 @@
 {
   "slug": "sweet-bomb-or-a-wild",
   "gameTitle": "Sweet Bomb Or A Wild",
+  "seo": {
+    "title": "Play Sweet Bomb or a Wild, a 6x5 Candy Cascade Slot Demo",
+    "description": "Play the browser demo of Sweet Bomb or a Wild, a 6x5 candy cascade slot: bomb multipliers, 96.00% published RTP, 12,777x max win. Play money, nothing to buy.",
+    "image": "https://playgambitgames.com/assets/img/sweet-bomb-live-capture.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 750,
+    "imageAlt": "The Sweet Bomb or a Wild board, a 6x5 grid of candy and fruit symbols over a candy landscape, above the demo's play-money credit meter."
+  },
   "theme": {
     "accent": "#ffd166",
     "accentSoft": "rgba(255, 209, 102, 0.42)",

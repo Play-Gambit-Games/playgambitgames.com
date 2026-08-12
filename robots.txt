@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Internal working notes, not content.
+Disallow: /docs/
+
+Sitemap: https://playgambitgames.com/sitemap.xml
