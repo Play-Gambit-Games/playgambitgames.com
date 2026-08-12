@@ -3,14 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gambit Games</title>
-  <meta name="description" content="Gambit Games is a slot studio building Sweet Bomb or a Wild and Dragon Hoard for the Stake Engine.">
-  <meta property="og:title" content="Gambit Games">
-  <meta property="og:description" content="A slot studio building Sweet Bomb or a Wild and Dragon Hoard for the Stake Engine.">
+  <title>Sweet Bomb or a Wild: 6x5 Candy Cascade Slot | Gambit Games</title>
+  <meta name="description" content="Gambit Games is a slot studio building on Stake Engine. Play the demo of Sweet Bomb or a Wild, a 6x5 candy cascade slot with 96.00% RTP and a 12,777x max win.">
+
+  <!-- The site serves from the apex domain, so the canonical is pinned to the
+       trailing-slash form used in sitemap.xml. -->
+  <link rel="canonical" href="https://playgambitgames.com/">
+
+  <meta property="og:title" content="Sweet Bomb or a Wild: 6x5 Candy Cascade Slot | Gambit Games">
+  <meta property="og:description" content="Gambit Games is a slot studio building on Stake Engine. Play the demo of Sweet Bomb or a Wild, a 6x5 candy cascade slot with 96.00% RTP and a 12,777x max win.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://playgambitgames.com">
+  <meta property="og:url" content="https://playgambitgames.com/">
+  <meta property="og:site_name" content="Gambit Games">
   <meta property="og:image" content="https://playgambitgames.com/assets/img/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Gambit Games wordmark on a dark grid, above the line: engineering the next generation of Stake Engine slots.">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sweet Bomb or a Wild: 6x5 Candy Cascade Slot | Gambit Games">
+  <meta name="twitter:description" content="Gambit Games is a slot studio building on Stake Engine. Play the demo of Sweet Bomb or a Wild, a 6x5 candy cascade slot with 96.00% RTP and a 12,777x max win.">
+  <meta name="twitter:image" content="https://playgambitgames.com/assets/img/og.png">
+  <meta name="twitter:image:alt" content="The Gambit Games wordmark on a dark grid, above the line: engineering the next generation of Stake Engine slots.">
   <link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicon-16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicon-32.png">
@@ -18,6 +31,14 @@
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/img/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- LCP preload. Measured with a buffered PerformanceObserver: the largest
+       contentful paint is a .reel-sym tile in the hero, whose background is a
+       slice of this capture. The preload scanner cannot see it, because the
+       URL only appears when the inline script builds the reels, so without
+       this hint the request queues behind the render-blocking font sheet. -->
+  <link rel="preload" as="image" href="/assets/img/sweet-bomb-live-capture.jpg" fetchpriority="high">
+
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
     /* ============================================================
@@ -481,6 +502,51 @@
       .bar { transition:none !important; }
     }
   </style>
+
+  <!-- ============================================================
+       Structured data
+       One graph, two nodes, so the game's publisher resolves against
+       the organization by @id inside the same block.
+       Every value here is stated somewhere on this page or in the
+       repo. Nothing that cannot be sourced is asserted: there are no
+       ratings, reviews, offers, awards or a release date, because
+       none of those exist yet. The game is a playable demo built on
+       Stake Engine, not a title released on Stake, and the wording
+       below is careful to say only that.
+       ============================================================ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://playgambitgames.com/#organization",
+        "name": "Gambit Games",
+        "url": "https://playgambitgames.com/",
+        "email": "hello@playgambitgames.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://playgambitgames.com/assets/img/gambit-wordmark.png",
+          "width": 632,
+          "height": 167
+        }
+      },
+      {
+        "@type": "VideoGame",
+        "@id": "https://playgambitgames.com/#sweet-bomb-or-a-wild",
+        "name": "Sweet Bomb or a Wild",
+        "url": "https://playgambitgames.com/sweet-bomb-or-a-wild/",
+        "description": "A 6x5 candy cascade slot built on Stake Engine. Pays-anywhere wins clear the grid, new symbols tumble in, and candy bomb multipliers chain up to x100. RTP 96.00%, max win 12,777x, high volatility. Playable as a browser demo.",
+        "genre": ["Slot", "Casino"],
+        "gamePlatform": "Web browser",
+        "playMode": "SinglePlayer",
+        "inLanguage": "en",
+        "image": "https://playgambitgames.com/assets/img/sweet-bomb-live-capture.jpg",
+        "publisher": { "@id": "https://playgambitgames.com/#organization" }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 <div class="page">
