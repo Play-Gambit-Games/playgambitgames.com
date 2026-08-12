@@ -280,9 +280,15 @@
     .lineup-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
     .lineup-card {
       position:relative; height:340px; border-radius:10px; overflow:hidden;
-      border:1px solid #1c2025; cursor:pointer;
+      border:1px solid #1c2025;
       transition:transform .35s cubic-bezier(.2,.8,.3,1), border-color .35s;
     }
+    /* Only cards that actually link anywhere get the pointer, so the pipeline
+       card does not advertise a click it cannot honour. color:inherit, repeated
+       on :hover, keeps the global "a" and "a:hover" rules from repainting the
+       card contents red. */
+    a.lineup-card { display:block; cursor:pointer; color:inherit; }
+    a.lineup-card:hover { color:inherit; }
     .lineup-card:hover { transform:translateY(-8px); border-color:#4a5158; }
     .lineup-veil { position:absolute; inset:0; background:linear-gradient(180deg,rgba(8,9,10,.15),rgba(8,9,10,.95)); }
     .lineup-body {
@@ -808,10 +814,10 @@
     <section id="lineup" class="wrap sec-lineup">
       <div class="lineup-head">
         <h2 class="lineup-h2">The lineup</h2>
-        <span class="lineup-count">02 titles · 01 playable demo</span>
+        <span class="lineup-count">02 titles · 02 playable demos</span>
       </div>
       <div class="lineup-grid">
-        <div class="lineup-card" style="background:repeating-linear-gradient(120deg,#171b20 0 20px,#12161a 20px 40px)">
+        <a class="lineup-card" href="/sweet-bomb-or-a-wild/" style="background:repeating-linear-gradient(120deg,#171b20 0 20px,#12161a 20px 40px)">
           <div class="lineup-veil" aria-hidden="true"></div>
           <div class="lineup-body">
             <div class="lineup-tag" style="color:#d8322c">Demo</div>
@@ -821,18 +827,18 @@
               <div class="lineup-cta" style="color:#d8322c">Play the demo →</div>
             </div>
           </div>
-        </div>
-        <div class="lineup-card" style="background:repeating-linear-gradient(120deg,#14171b 0 20px,#101317 20px 40px)">
+        </a>
+        <a class="lineup-card" href="/dragonhoard/" style="background:repeating-linear-gradient(120deg,#14171b 0 20px,#101317 20px 40px)">
           <div class="lineup-veil" aria-hidden="true"></div>
           <div class="lineup-body">
             <div class="lineup-tag" style="color:#8d949b">In development</div>
             <div>
               <h3 class="lineup-t">Dragon Hoard</h3>
               <p class="lineup-d">Next up. Math in final simulation.</p>
-              <div class="lineup-cta" style="color:#8d949b">Coming soon</div>
+              <div class="lineup-cta" style="color:#8d949b">Play the demo →</div>
             </div>
           </div>
-        </div>
+        </a>
         <div class="lineup-card" style="background:repeating-linear-gradient(120deg,#111417 0 20px,#0e1114 20px 40px)">
           <div class="lineup-veil" aria-hidden="true"></div>
           <div class="lineup-body">
