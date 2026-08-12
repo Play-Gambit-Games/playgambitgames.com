@@ -3,7 +3,7 @@
   "note": "SEO only. Unlike sweet-bomb-or-a-wild.json this manifest carries no gameTitle, theme, notes or facts, because /dragonhoard/ is not published by tools/publish-game-demo.mjs: the game repo's own demo/scripts/build-demo.mjs assembles it, badge and disclosure config included, and the result is copied in here as a directory. So the only thing this site owns for that page is its head, and the only tool that reads this file is tools/seo-head.mjs. Re-run 'node tools/seo-head.mjs --slug dragonhoard' after every rebuild, or the new build lands with no title again.",
   "seo": {
     "title": "Play the Dragon Hoard Demo: a Cluster Pays Tumble Slot",
-    "description": "Dragon Hoard is a cluster pays slot in development at Gambit Games. Play the browser demo: tumbling cascades, a bonus round, play money with no cash value.",
+    "description": "Dragon Hoard is a cluster pays slot in development at Gambit Games. The browser demo is an early build with rough edges. Tumbling cascades, play money only.",
     "image": "https://playgambitgames.com/assets/img/og.png",
     "imageWidth": 1200,
     "imageHeight": 630,
