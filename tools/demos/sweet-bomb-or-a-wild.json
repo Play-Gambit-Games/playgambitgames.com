@@ -4,7 +4,7 @@
   "seo": {
     "title": "Play Sweet Bomb or a Wild, a 6x5 Candy Cascade Slot Demo",
     "description": "Play the browser demo of Sweet Bomb or a Wild, a 6x5 candy cascade slot: bomb multipliers, 96.00% published RTP, 12,777x max win. Play money, nothing to buy.",
-    "image": "https://playgambitgames.com/assets/img/sweet-bomb-live-capture.jpg",
+    "image": "https://playgambitgames.com/assets/img/sweet-bomb-live-capture-v2.jpg",
     "imageWidth": 1200,
     "imageHeight": 750,
     "imageAlt": "The Sweet Bomb or a Wild board, a 6x5 grid of candy and fruit symbols over a candy landscape, above the demo's play-money credit meter."
@@ -26,9 +26,18 @@
     "<strong>A short session proves nothing.</strong> A published return is an average over millions of rounds. A few hundred spins will land nowhere near it, in either direction, and that is true of real play too."
   ],
   "facts": [
-    { "label": "Published return to player", "value": "96.00%" },
-    { "label": "Maximum win", "value": "12,777x the stake" },
-    { "label": "Starting play-money balance", "value": "$1,000.00" }
+    {
+      "label": "Published return to player",
+      "value": "96.00%"
+    },
+    {
+      "label": "Maximum win",
+      "value": "12,777x the stake"
+    },
+    {
+      "label": "Starting play-money balance",
+      "value": "$1,000.00"
+    }
   ],
   "footnote": "Both figures above are read from the game's own math configuration (PUBLISHED_RTP and MAX_WIN_MULTIPLIER), not estimated. The starting balance applies to a first visit: this browser remembers where you left off."
 }
