@@ -127,9 +127,19 @@ const factFor = (label) => manifest.facts.find((f) => f.label === label)?.value 
    test: the facts row was changed to a wrong RTP and the check still passed, because the correct
    figure was also mentioned in the surrounding prose. A gate that decides whether a public site
    auto-updates has to be exact about which claim it is checking. */
+/* The max-win row binds to the ADVERTISED constant, not the math cap. The game carries both:
+   MAX_WIN_MULTIPLIER is the hard clamp, while ADVERTISED_MAX_WIN_MULTIPLIER is deliberately the
+   floor across the published tables, because the bought-bonus table tops out lower and quoting
+   the clamp would overstate what a bonus buy can pay. This check was bound to the clamp and so
+   sailed past the day the game split them apart, leaving the panel advertising a figure higher
+   than the game's own paytable shows. Bind to what players are told. */
 const claimChecks = [
 	['PUBLISHED_RTP', 'Published return to player', (v) => `${Number(v).toFixed(2)}%`],
-	['MAX_WIN_MULTIPLIER', 'Maximum win', (v) => `${Number(v).toLocaleString('en-US')}x the stake`],
+	[
+		'ADVERTISED_MAX_WIN_MULTIPLIER',
+		'Maximum win',
+		(v) => `${Number(v).toLocaleString('en-US')}x the stake`,
+	],
 	['STARTING_BALANCE', 'Starting play-money balance', (v) => `$${Number(v).toLocaleString('en-US')}.00`],
 ];
 const claimFailures = [];
