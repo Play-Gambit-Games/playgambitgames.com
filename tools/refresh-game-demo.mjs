@@ -193,7 +193,14 @@ const fail = [];
     p.on('console', m => { if (m.type() === 'error') errs.push(m.text()); });
     p.on('response', r => { if (r.status() >= 400) bad.push(r.status() + ' ' + r.url()); });
     await p.goto(TARGET, { waitUntil: 'networkidle', timeout: 60000 });
-    await p.waitForTimeout(3500);
+
+    /* Wait for readiness rather than guessing at it. A fixed delay here produced a false
+       failure the moment the game grew a longer studio intro: the click landed while the
+       loader was still counting up, so the spins that followed were still settling when the
+       badge checks read the balance, and a passing build was reported as chain-spinning
+       behind the disclosure panel. Anchor on what the game actually shows instead, so a
+       future intro of any length cannot make this lie again. */
+    await p.getByText('PLAY', { exact: true }).first().waitFor({ state: 'visible', timeout: 90000 });
 
     const badge = await p.evaluate(() => {
       const h = document.getElementById('demo-badge-host');
@@ -202,7 +209,13 @@ const fail = [];
     if (!badge || !/DEMO/i.test(badge)) fail.push(view.name + ': DEMO badge missing');
 
     await p.getByText('PLAY', { exact: true }).first().click();
-    await p.waitForTimeout(2500);
+    // The HUD's CREDIT readout is the game's own signal that it is ready to take a bet.
+    await p.waitForFunction(
+      () => /CREDIT\\s*\\n?\\s*\\$[\\d,]+\\.\\d\\d/i.test(document.body.innerText),
+      null,
+      { timeout: 60000 },
+    );
+    await p.waitForTimeout(1500);
     const credit = () => p.evaluate(() => {
       const m = document.body.innerText.match(/CREDIT\\s*\\n?\\s*\\$([\\d,]+\\.\\d\\d)/i);
       return m ? m[1] : null;
