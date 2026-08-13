@@ -235,32 +235,44 @@ const fail = [];
     };
     const before = await settled();
     if (before === null) fail.push(view.name + ': no CREDIT readout, the HUD did not render');
+
+    /* The badge's keyboard checks run FIRST, on a page that has not spun yet.
+       Running them after four spins made them flaky: a celebration overlay left up by a win
+       can take focus back off the pill, and once the event is no longer aimed at the badge
+       the game handles Space and spins, which reads exactly like the badge failing to claim
+       it. Same build passed one run and failed the next. Here nothing is in flight, the
+       balance is the untouched starting value, and the assertions mean what they say. */
+    if (view.name === 'desktop') {
+      await p.evaluate(() => document.getElementById('demo-badge-host').shadowRoot.querySelector('.pill').focus());
+      const q0 = await settled();
+      await p.keyboard.press('Space'); await p.waitForTimeout(1200);
+      const opened = await p.evaluate(() => !!document.getElementById('demo-badge-host').shadowRoot.querySelector('.scrim'));
+      if (!opened) fail.push('Space on the pill did not open the disclosure panel');
+      if (await credit() !== q0) fail.push('Space on the pill wagered a round');
+      await p.evaluate(() => { for (let i = 0; i < 12; i++) document.body.dispatchEvent(
+        new KeyboardEvent('keydown', { code: 'Space', key: ' ', repeat: true, bubbles: true, composed: true, cancelable: true })); });
+      await p.waitForTimeout(6000);
+      if (await credit() !== q0) fail.push('a held Space chain-spun behind the open panel');
+      if (!(await p.evaluate(() => !!document.getElementById('demo-badge-host').shadowRoot.querySelector('.scrim'))))
+        fail.push('the disclosure panel closed itself under a held Space');
+      await p.keyboard.press('Escape'); await p.waitForTimeout(800);
+      if (await p.evaluate(() => !!document.getElementById('demo-badge-host').shadowRoot.querySelector('.scrim')))
+        fail.push('Escape did not close the disclosure panel');
+      // A mouse open then dismiss must not leave focus parked on the pill eating the spacebar.
+      await p.evaluate(() => document.getElementById('demo-badge-host').shadowRoot.querySelector('.pill').click());
+      await p.waitForTimeout(700);
+      await p.evaluate(() => { const s = document.getElementById('demo-badge-host').shadowRoot.querySelector('.scrim');
+        s.dispatchEvent(new MouseEvent('click', { bubbles: true })); });
+      await p.waitForTimeout(700);
+      const c1 = await settled();
+      await p.keyboard.press('Space'); await p.waitForTimeout(5000);
+      if (await settled() === c1) fail.push('after a mouse open and dismiss, Space no longer spins');
+    }
+
     for (let i = 0; i < 4; i++) { await p.keyboard.press('Space'); await p.waitForTimeout(4000); }
     const after = await settled();
     if (before !== null && before === after) fail.push(view.name + ': 4 spins did not move the balance (' + before + ')');
 
-    if (view.name === 'desktop') {
-      // the badge must not steal Space from the game, nor let a held Space spin behind the panel
-      await p.evaluate(() => document.getElementById('demo-badge-host').shadowRoot.querySelector('.pill').focus());
-      const c0 = await settled();
-      await p.keyboard.press('Space'); await p.waitForTimeout(1200);
-      const opened = await p.evaluate(() => !!document.getElementById('demo-badge-host').shadowRoot.querySelector('.scrim'));
-      if (!opened) fail.push('Space on the pill did not open the disclosure panel');
-      if (await credit() !== c0) fail.push('Space on the pill wagered a round');
-      await p.evaluate(() => { for (let i = 0; i < 12; i++) document.body.dispatchEvent(
-        new KeyboardEvent('keydown', { code: 'Space', key: ' ', repeat: true, bubbles: true, composed: true, cancelable: true })); });
-      await p.waitForTimeout(6000);
-      if (await credit() !== c0) fail.push('a held Space chain-spun behind the open panel');
-      await p.keyboard.press('Escape'); await p.waitForTimeout(600);
-      await p.evaluate(() => document.getElementById('demo-badge-host').shadowRoot.querySelector('.pill').click());
-      await p.waitForTimeout(600);
-      await p.evaluate(() => { const s = document.getElementById('demo-badge-host').shadowRoot.querySelector('.scrim');
-        s.dispatchEvent(new MouseEvent('click', { bubbles: true })); });
-      await p.waitForTimeout(600);
-      const c1 = await settled();
-      await p.keyboard.press('Space'); await p.waitForTimeout(4000);
-      if (await settled() === c1) fail.push('after a mouse open and dismiss, Space no longer spins');
-    }
 
     if (errs.length) fail.push(view.name + ' console errors: ' + JSON.stringify(errs.slice(0, 5)));
     if (bad.length) fail.push(view.name + ' failed requests: ' + JSON.stringify(bad.slice(0, 5)));
