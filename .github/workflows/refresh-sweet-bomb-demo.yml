@@ -1,0 +1,168 @@
+# Rebuilds the hosted Sweet Bomb demo when the game repo moves, and merges only if the same QA
+# gate that runs on a laptop passes here too.
+#
+# This exists because the laptop version could not survive the lid closing. Everything that
+# decides whether the public site changes still lives in tools/refresh-game-demo.mjs, so CI and
+# local runs cannot drift apart: this file only supplies a checkout, a toolchain, and the git
+# plumbing to land the result.
+#
+# The two repos are checked out as SIBLINGS rather than nesting the game inside the site. A nested
+# clone would be swept up by the `git add -A` that commits the rebuild, which would publish the
+# entire game source, including its history, into a public repo.
+
+name: Refresh Sweet Bomb demo
+
+on:
+  schedule:
+    # Every four hours. Off the hour on purpose: :00 is when every scheduled workflow on GitHub
+    # fires at once, and queue delays there run into the tens of minutes.
+    - cron: '13 */4 * * *'
+  workflow_dispatch:
+    inputs:
+      check_only:
+        description: 'Report whether the demo is behind, rebuild nothing'
+        type: boolean
+        default: false
+
+# Never let two refreshes race: they would both rebuild, both try to land a branch, and the loser
+# would push a demo built from a commit the marker no longer names.
+concurrency:
+  group: refresh-sweet-bomb-demo
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+        with:
+          path: site
+          fetch-depth: 0
+
+      - name: Check out the game
+        uses: actions/checkout@v4
+        with:
+          repository: Play-Gambit-Games/sweet-bomb-or-a-wild
+          token: ${{ secrets.GAME_REPO_TOKEN }}
+          path: game
+          fetch-depth: 0
+          # The math-publish tables are Git LFS and weigh several MB. The app never imports them,
+          # so the build succeeds from the pointer files alone and the fetch stays small.
+          lfs: false
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install game dependencies
+        working-directory: game/web
+        run: bun install --frozen-lockfile
+
+      - name: Install Chromium for the browser gate
+        working-directory: game/web
+        run: bunx playwright install --with-deps chromium
+
+      - name: Run the QA gate
+        id: gate
+        working-directory: site
+        env:
+          GAME_REPO_SWEET_BOMB_OR_A_WILD: ${{ github.workspace }}/game
+        run: |
+          set +e
+          node tools/refresh-game-demo.mjs --slug sweet-bomb-or-a-wild \
+            ${{ inputs.check_only && '--check-only' || '' }} 2>&1 | tee gate.log
+          code=${PIPESTATUS[0]}
+          set -e
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          if grep -q '^STATUS: updated' gate.log; then
+            echo "updated=true" >> "$GITHUB_OUTPUT"
+            echo "from=$(grep '^STATUS: updated' gate.log | awk '{print $3}')" >> "$GITHUB_OUTPUT"
+            echo "to=$(grep '^STATUS: updated' gate.log | awk '{print $5}')" >> "$GITHUB_OUTPUT"
+          fi
+          # Keep the log out of the commit either way.
+          rm -f gate.log
+          exit 0
+
+      # Exit 2 means the build was rebuilt and REJECTED. The site checkout still holds that failed
+      # build, so it is discarded here rather than being allowed anywhere near main. The live demo
+      # stays on whatever it was already serving.
+      - name: Discard a rejected build
+        if: steps.gate.outputs.exit_code == '2'
+        working-directory: site
+        run: git checkout -- . && git clean -fd
+
+      - name: Fail on a rejected build
+        if: steps.gate.outputs.exit_code == '2'
+        run: |
+          echo "::error::QA gate rejected the rebuilt demo. The live site is unchanged."
+          exit 1
+
+      - name: Fail on a broken run
+        if: steps.gate.outputs.exit_code == '1'
+        run: |
+          echo "::error::The refresh could not run at all. Nothing was changed."
+          exit 1
+
+      - name: Land the rebuild
+        if: steps.gate.outputs.exit_code == '0' && steps.gate.outputs.updated == 'true'
+        working-directory: site
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          from='${{ steps.gate.outputs.from }}'
+          to='${{ steps.gate.outputs.to }}'
+          branch="chore/rebuild-sweet-bomb-${to}"
+
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git checkout -b "$branch"
+          git add -A
+
+          # A rebuild that changes nothing but the recorded commit is common: the game repo takes
+          # commits that leave no file changed. Say so rather than implying players saw something.
+          if git diff --cached --quiet -- ':!sweet-bomb-or-a-wild/.published-by-publish-game-demo'; then
+            note='The rebuilt bundle is byte-identical to the deployed one, so only the recorded source commit moves.'
+          else
+            note='Both QA gates passed against the rebuilt demo.'
+          fi
+
+          git commit -m "Rebuild the Sweet Bomb demo from the game repo at ${to}" \
+                     -m "Automated refresh, ${from} to ${to}. ${note}"
+          git push -u origin "$branch"
+
+          gh pr create \
+            --title "Rebuild the Sweet Bomb demo from the game repo at ${to}" \
+            --body "Automated refresh from \`${from}\` to \`${to}\`.
+
+          ${note}
+
+          Gate 1 confirmed the demo's disclosure still matches the game's math config (published RTP, advertised maximum win, starting balance). Gate 2 drove a real browser over desktop and portrait: demo badge present, spins move the balance, the badge does not steal the spacebar from the game, and no console errors or failed requests."
+
+          gh pr merge --merge --delete-branch
+
+      - name: Confirm it went live
+        if: steps.gate.outputs.exit_code == '0' && steps.gate.outputs.updated == 'true'
+        working-directory: site
+        run: |
+          git checkout main && git pull --ff-only
+          want=$(grep -o 'index-[A-Za-z0-9_-]*\.js' sweet-bomb-or-a-wild/index.html | head -1)
+          echo "waiting for $want"
+          for i in $(seq 1 40); do
+            if curl -sf https://playgambitgames.com/sweet-bomb-or-a-wild/ | grep -q "$want"; then
+              echo "live after ~$((i * 15))s"
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::warning::Pages had not served $want after 10 minutes. The merge landed; the deploy may still be in flight."
