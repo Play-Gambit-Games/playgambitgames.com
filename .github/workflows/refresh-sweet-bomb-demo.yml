@@ -34,9 +34,11 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # Least privilege, and scoped to THIS repository only. GITHUB_TOKEN cannot reach any other
+    # repo regardless of what it is granted here, which is what keeps a refresh incapable of
+    # touching the game repo or anything else in the org.
     permissions:
       contents: write
-      pull-requests: write
 
     steps:
       - name: Check out the site
@@ -45,16 +47,31 @@ jobs:
           path: site
           fetch-depth: 0
 
-      - name: Check out the game
+      # READ ONLY. persist-credentials: false is the important part: without it, checkout leaves a
+      # push-capable credential inside the game clone's git config, and every later git command run
+      # in that directory could write to the game repo. With it, the token is used for the initial
+      # fetch and then gone, so this job is structurally incapable of pushing anything upstream.
+      - name: Check out the game (read only)
         uses: actions/checkout@v4
         with:
           repository: Play-Gambit-Games/sweet-bomb-or-a-wild
           token: ${{ secrets.GAME_REPO_TOKEN }}
+          persist-credentials: false
           path: game
           fetch-depth: 0
           # The math-publish tables are Git LFS and weigh several MB. The app never imports them,
           # so the build succeeds from the pointer files alone and the fetch stays small.
           lfs: false
+
+      # Belt and braces. If a future edit ever reintroduced a credential in the game clone, this
+      # fails the run before anything is built rather than after something has been pushed.
+      - name: Prove the game clone cannot push
+        run: |
+          if git -C game config --get-regexp '^http\..*\.extraheader$' >/dev/null 2>&1; then
+            echo "::error::The game checkout retained a credential. Refusing to continue."
+            exit 1
+          fi
+          echo "game clone has no stored credential, read only as intended"
 
       - uses: oven-sh/setup-bun@v2
         with:
@@ -113,20 +130,28 @@ jobs:
           echo "::error::The refresh could not run at all. Nothing was changed."
           exit 1
 
+      # Pushes straight to main rather than opening a pull request. Not a preference: this org
+      # disables "Allow GitHub Actions to create and approve pull requests", so gh pr create fails
+      # with a GraphQL permission error. An auto-merged PR with no human reviewer would have been
+      # ceremony anyway; the commit on main carries the same audit trail, and nothing lands here
+      # that has not already passed both gates.
       - name: Land the rebuild
         if: steps.gate.outputs.exit_code == '0' && steps.gate.outputs.updated == 'true'
         working-directory: site
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           from='${{ steps.gate.outputs.from }}'
           to='${{ steps.gate.outputs.to }}'
-          branch="chore/rebuild-sweet-bomb-${to}"
+
+          # Refuse to push anywhere except this website repo, whatever else may have changed.
+          origin=$(git remote get-url origin)
+          case "$origin" in
+            *Play-Gambit-Games/playgambitgames.com*) ;;
+            *) echo "::error::origin is $origin, not the website repo. Refusing to push."; exit 1 ;;
+          esac
 
           git config user.name  'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git checkout -b "$branch"
           git add -A
 
           # A rebuild that changes nothing but the recorded commit is common: the game repo takes
@@ -139,23 +164,17 @@ jobs:
 
           git commit -m "Rebuild the Sweet Bomb demo from the game repo at ${to}" \
                      -m "Automated refresh, ${from} to ${to}. ${note}"
-          git push -u origin "$branch"
 
-          gh pr create \
-            --title "Rebuild the Sweet Bomb demo from the game repo at ${to}" \
-            --body "Automated refresh from \`${from}\` to \`${to}\`.
-
-          ${note}
-
-          Gate 1 confirmed the demo's disclosure still matches the game's math config (published RTP, advertised maximum win, starting balance). Gate 2 drove a real browser over desktop and portrait: demo badge present, spins move the balance, the badge does not steal the spacebar from the game, and no console errors or failed requests."
-
-          gh pr merge --merge --delete-branch
+          # Rebase rather than force: if a human landed something on main while this job was
+          # building, their commit wins and the rebuild stacks on top of it.
+          git pull --rebase origin main
+          git push origin HEAD:main
 
       - name: Confirm it went live
         if: steps.gate.outputs.exit_code == '0' && steps.gate.outputs.updated == 'true'
         working-directory: site
         run: |
-          git checkout main && git pull --ff-only
+          git pull --ff-only origin main
           want=$(grep -o 'index-[A-Za-z0-9_-]*\.js' sweet-bomb-or-a-wild/index.html | head -1)
           echo "waiting for $want"
           for i in $(seq 1 40); do
