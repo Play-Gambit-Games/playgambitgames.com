@@ -66,15 +66,22 @@ const slug = arg('slug');
 if (!slug) die(1, 'missing --slug');
 const base = GAMES[slug];
 if (!base) die(1, `unknown slug "${slug}", add it to GAMES in this file`);
-const game = { ...base, repo: repoOverride(slug) ?? base.repo };
+const override = repoOverride(slug);
+const game = { ...base, repo: override ?? base.repo };
 if (!existsSync(game.repo)) die(1, `game repo not found at ${game.repo}`);
+
+/* An overridden path means CI, where the game was just cloned at the tip of main by a checkout
+   action that then discarded its credential on purpose, so the clone cannot talk to the remote at
+   all. It does not need to: it is already current, and origin/main is exactly what was fetched
+   seconds ago. Fetching and pulling are for the long-lived local checkout, which does go stale. */
+const isPrefetched = override !== undefined;
 
 const appDir = path.join(game.repo, game.app);
 const distDir = path.join(appDir, 'dist');
 
 // ------------------------------------------------------------------ is there anything to do
 
-run('git', ['fetch', 'origin', '--quiet'], game.repo);
+if (!isPrefetched) run('git', ['fetch', 'origin', '--quiet'], game.repo);
 const remoteSha = run('git', ['rev-parse', 'origin/main'], game.repo);
 
 const markerPath = path.join(SITE_DIR, slug, '.published-by-publish-game-demo');
@@ -102,10 +109,12 @@ if (hasFlag('check-only')) {
 
 /* --ff-only so a diverged local branch stops the run instead of opening a merge the agent would
    then have to resolve unattended. */
-try {
-	run('git', ['pull', '--ff-only', 'origin', 'main'], game.repo);
-} catch (error) {
-	die(2, `git pull --ff-only failed, resolve the game repo by hand:\n${error.stderr || error.message}`);
+if (!isPrefetched) {
+	try {
+		run('git', ['pull', '--ff-only', 'origin', 'main'], game.repo);
+	} catch (error) {
+		die(2, `git pull --ff-only failed, resolve the game repo by hand:\n${error.stderr || error.message}`);
+	}
 }
 
 try {
