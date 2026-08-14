@@ -33,7 +33,11 @@ const TOOLS_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SITE_DIR = path.resolve(TOOLS_DIR, '..');
 
 /* Where each published slug's source lives. Adding a game here plus a demos/<slug>.json manifest
-   is all a new game needs to join the daily refresh. */
+   is all a new game needs to join the refresh.
+
+   The checkout path is overridable per slug via an environment variable, because CI clones the
+   game somewhere else entirely. GAME_REPO_SWEET_BOMB_OR_A_WILD wins over the local default, so
+   the same script drives both a laptop and a runner with no branching inside it. */
 const GAMES = {
 	'sweet-bomb-or-a-wild': {
 		repo: '/Users/robertbotto/Projects/sweet-bomb-or-a-wild',
@@ -41,6 +45,8 @@ const GAMES = {
 		configPath: 'web/src/game/config.ts',
 	},
 };
+
+const repoOverride = (slugName) => process.env[`GAME_REPO_${slugName.toUpperCase().replace(/-/g, '_')}`];
 
 function arg(name, fallback = null) {
 	const index = process.argv.indexOf(`--${name}`);
@@ -58,8 +64,9 @@ const run = (cmd, args, cwd) =>
 
 const slug = arg('slug');
 if (!slug) die(1, 'missing --slug');
-const game = GAMES[slug];
-if (!game) die(1, `unknown slug "${slug}", add it to GAMES in this file`);
+const base = GAMES[slug];
+if (!base) die(1, `unknown slug "${slug}", add it to GAMES in this file`);
+const game = { ...base, repo: repoOverride(slug) ?? base.repo };
 if (!existsSync(game.repo)) die(1, `game repo not found at ${game.repo}`);
 
 const appDir = path.join(game.repo, game.app);
