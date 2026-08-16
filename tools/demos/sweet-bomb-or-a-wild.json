@@ -3,7 +3,7 @@
   "gameTitle": "Sweet Bomb Or A Wild",
   "seo": {
     "title": "Play Sweet Bomb or a Wild, a 6x5 Candy Cascade Slot Demo",
-    "description": "Play the browser demo of Sweet Bomb or a Wild, a 6x5 candy cascade slot: bomb multipliers, 96.00% published RTP, 10,667x max win. Play money, nothing to buy.",
+    "description": "Play the browser demo of Sweet Bomb or a Wild, a 6x5 candy cascade slot: bomb multipliers, 96.00% published RTP, 12,777x max win. Play money, nothing to buy.",
     "image": "https://playgambitgames.com/assets/img/sweet-bomb-live-capture-v2.jpg",
     "imageWidth": 1200,
     "imageHeight": 750,
@@ -32,6 +32,10 @@
     },
     {
       "label": "Maximum win",
+      "value": "12,777x the stake"
+    },
+    {
+      "label": "Maximum win from a bought bonus",
       "value": "10,667x the stake"
     },
     {
@@ -39,5 +43,5 @@
       "value": "$1,000.00"
     }
   ],
-  "footnote": "Both figures above are read from the game's own math configuration (PUBLISHED_RTP and ADVERTISED_MAX_WIN_MULTIPLIER), not estimated, so they match what the in-game paytable states. The maximum win is the floor across all four bet modes: a few rounds can pay above it, none below. The starting balance applies to a first visit: this browser remembers where you left off."
+  "footnote": "The figures above are read from the game's own math configuration (PUBLISHED_RTP, MAX_WIN_MULTIPLIER and BONUS_BUY_MAX_WIN_MULTIPLIER), not estimated, so they match what the in-game paytable states. A bought bonus draws from a table that tops out lower than the game as a whole, which is why the two figures differ, and the in-game paytable states both the same way. The starting balance applies to a first visit: this browser remembers where you left off."
 }
