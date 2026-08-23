@@ -1,7 +1,7 @@
 {
   "game": "dragonhoard",
   "seed": 20260801,
-  "generatedAt": "2026-08-03T03:07:45.000Z",
+  "generatedAt": "2026-08-23T12:48:18.836Z",
   "bookAmountMultiplier": 100,
   "method": "stratified-by-payout, stratum weight preserved",
   "modes": {
@@ -25,9 +25,9 @@
         "maxPayoutMultiplier": 10000
       },
       "library": {
-        "rtp": 0.9599999993266806,
-        "hitRate": 0.2907143856919227,
-        "bonusTriggerRate": 0.005000099992594576
+        "rtp": 0.9599999996019895,
+        "hitRate": 0.29071438569194225,
+        "bonusTriggerRate": 0.005000099992621972
       }
     },
     "bonus": {
@@ -53,6 +53,131 @@
         "rtp": 0.9600000000144103,
         "hitRate": 1,
         "bonusTriggerRate": 1
+      }
+    },
+    "favor": {
+      "cost": 1.25,
+      "indexFile": "books-favor.index.json.gz",
+      "blocksFile": "books-favor.blocks.gz",
+      "blockSize": 32,
+      "blocks": 309,
+      "bytesGzip": 7301386,
+      "bytesRaw": 91100912,
+      "books": 9858,
+      "libraryBooks": 200000,
+      "strata": 3081,
+      "stratumWidth": 0,
+      "minPerStratum": 1,
+      "sample": {
+        "rtp": 0.9599995451106711,
+        "hitRate": 0.25999995932144004,
+        "bonusTriggerRate": 0.009351364107990279,
+        "maxPayoutMultiplier": 10000
+      },
+      "library": {
+        "rtp": 0.9599999992074129,
+        "hitRate": 0.26000014997918564,
+        "bonusTriggerRate": 0.010000149986387874
+      }
+    },
+    "plunder": {
+      "cost": 35,
+      "indexFile": "books-plunder.index.json.gz",
+      "blocksFile": "books-plunder.blocks.gz",
+      "blockSize": 32,
+      "blocks": 74,
+      "bytesGzip": 2201820,
+      "bytesRaw": 28137249,
+      "books": 2358,
+      "libraryBooks": 100000,
+      "strata": 300,
+      "stratumWidth": 0.02,
+      "minPerStratum": 1,
+      "sample": {
+        "rtp": 0.9602819231746056,
+        "hitRate": 0.7333343991474908,
+        "bonusTriggerRate": 0.38290580818533726,
+        "maxPayoutMultiplier": 10000
+      },
+      "library": {
+        "rtp": 0.9599999999963497,
+        "hitRate": 0.7333343833260825,
+        "bonusTriggerRate": 0.4000010499959395
+      }
+    },
+    "gilded": {
+      "cost": 125,
+      "indexFile": "books-gilded.index.json.gz",
+      "blocksFile": "books-gilded.blocks.gz",
+      "blockSize": 32,
+      "blocks": 43,
+      "bytesGzip": 2278224,
+      "bytesRaw": 29674037,
+      "books": 1351,
+      "libraryBooks": 150000,
+      "strata": 315,
+      "stratumWidth": 0.02,
+      "minPerStratum": 1,
+      "sample": {
+        "rtp": 0.9601883980438034,
+        "hitRate": 1,
+        "bonusTriggerRate": 1,
+        "maxPayoutMultiplier": 10000
+      },
+      "library": {
+        "rtp": 0.9599999999953881,
+        "hitRate": 1,
+        "bonusTriggerRate": 1
+      }
+    },
+    "deep": {
+      "cost": 190,
+      "indexFile": "books-deep.index.json.gz",
+      "blocksFile": "books-deep.blocks.gz",
+      "blockSize": 32,
+      "blocks": 43,
+      "bytesGzip": 2898716,
+      "bytesRaw": 37909859,
+      "books": 1369,
+      "libraryBooks": 120000,
+      "strata": 271,
+      "stratumWidth": 0.02,
+      "minPerStratum": 1,
+      "sample": {
+        "rtp": 0.9603673501446723,
+        "hitRate": 1,
+        "bonusTriggerRate": 1,
+        "maxPayoutMultiplier": 10000
+      },
+      "library": {
+        "rtp": 0.9599999999845565,
+        "hitRate": 1,
+        "bonusTriggerRate": 1
+      }
+    },
+    "awaken": {
+      "cost": 1.5,
+      "indexFile": "books-awaken.index.json.gz",
+      "blocksFile": "books-awaken.blocks.gz",
+      "blockSize": 32,
+      "blocks": 306,
+      "bytesGzip": 3317670,
+      "bytesRaw": 41377940,
+      "books": 9763,
+      "libraryBooks": 200000,
+      "strata": 1420,
+      "stratumWidth": 0,
+      "minPerStratum": 1,
+      "sample": {
+        "rtp": 0.9600015976988564,
+        "hitRate": 0.28871676498439064,
+        "bonusTriggerRate": 0.003002518984272763,
+        "maxPayoutMultiplier": 10000
+      },
+      "library": {
+        "rtp": 0.9599999986535992,
+        "hitRate": 0.288717468690173,
+        "bonusTriggerRate": 0.003003182995280518
       }
     }
   }
