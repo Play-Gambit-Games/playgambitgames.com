@@ -1,7 +1,7 @@
 {
   "game": "dragonhoard",
   "seed": 20260801,
-  "generatedAt": "2026-08-23T12:48:18.836Z",
+  "generatedAt": "2026-08-29T06:27:17.210Z",
   "bookAmountMultiplier": 100,
   "method": "stratified-by-payout, stratum weight preserved",
   "modes": {
@@ -11,7 +11,7 @@
       "blocksFile": "books-base.blocks.gz",
       "blockSize": 32,
       "blocks": 620,
-      "bytesGzip": 7679889,
+      "bytesGzip": 7679886,
       "bytesRaw": 93325914,
       "books": 19833,
       "libraryBooks": 200000,
@@ -19,15 +19,15 @@
       "stratumWidth": 0,
       "minPerStratum": 1,
       "sample": {
-        "rtp": 0.9600000210497324,
-        "hitRate": 0.2907133825773613,
-        "bonusTriggerRate": 0.004721448737078456,
+        "rtp": 0.9599990406295857,
+        "hitRate": 0.2907133832073315,
+        "bonusTriggerRate": 0.004721448732884987,
         "maxPayoutMultiplier": 10000
       },
       "library": {
         "rtp": 0.9599999996019895,
         "hitRate": 0.29071438569194225,
-        "bonusTriggerRate": 0.005000099992621972
+        "bonusTriggerRate": 0.005000100092728562
       }
     },
     "bonus": {
@@ -56,28 +56,28 @@
       }
     },
     "favor": {
-      "cost": 1.25,
+      "cost": 1.2,
       "indexFile": "books-favor.index.json.gz",
       "blocksFile": "books-favor.blocks.gz",
       "blockSize": 32,
       "blocks": 309,
-      "bytesGzip": 7301386,
-      "bytesRaw": 91100912,
-      "books": 9858,
+      "bytesGzip": 7260305,
+      "bytesRaw": 90553027,
+      "books": 9857,
       "libraryBooks": 200000,
       "strata": 3081,
       "stratumWidth": 0,
       "minPerStratum": 1,
       "sample": {
-        "rtp": 0.9599995451106711,
-        "hitRate": 0.25999995932144004,
-        "bonusTriggerRate": 0.009351364107990279,
+        "rtp": 0.9599990725492691,
+        "hitRate": 0.25999972928321124,
+        "bonusTriggerRate": 0.009632769478579214,
         "maxPayoutMultiplier": 10000
       },
       "library": {
-        "rtp": 0.9599999992074129,
-        "hitRate": 0.26000014997918564,
-        "bonusTriggerRate": 0.010000149986387874
+        "rtp": 0.959999999142676,
+        "hitRate": 0.2600001439559325,
+        "bonusTriggerRate": 0.010000143986259166
       }
     },
     "plunder": {
