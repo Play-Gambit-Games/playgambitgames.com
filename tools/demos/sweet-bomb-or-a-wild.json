@@ -36,12 +36,12 @@
     },
     {
       "label": "Maximum win from a bought bonus",
-      "value": "10,667x the stake"
+      "value": "12,777x the stake"
     },
     {
       "label": "Starting play-money balance",
       "value": "$1,000.00"
     }
   ],
-  "footnote": "The figures above are read from the game's own math configuration (PUBLISHED_RTP, MAX_WIN_MULTIPLIER and BONUS_BUY_MAX_WIN_MULTIPLIER), not estimated, so they match what the in-game paytable states. A bought bonus draws from a table that tops out lower than the game as a whole, which is why the two figures differ, and the in-game paytable states both the same way. The starting balance applies to a first visit: this browser remembers where you left off."
+  "footnote": "The figures above are read from the game's own math configuration (PUBLISHED_RTP, MAX_WIN_MULTIPLIER and BONUS_BUY_MAX_WIN_MULTIPLIER), not estimated, so they match what the in-game paytable states. A bought bonus reaches the same 12,777x cap as the game as a whole: it once topped out lower, and the published bonus table now carries rounds at the full cap. The in-game paytable states both figures the same way. The starting balance applies to a first visit: this browser remembers where you left off."
 }
