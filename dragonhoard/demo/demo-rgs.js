@@ -67,6 +67,14 @@
 	var SCRIPT_URL = (document.currentScript && document.currentScript.src) || window.location.href;
 	var DATA_BASE = new URL('data/', SCRIPT_URL).href;
 
+	// Cache key for the sample files. See the long note in demo/scripts/build-demo.mjs: these
+	// files ship under stable names and are fetched with force-cache, so without this a
+	// republish leaves returning visitors mixing an old index with new blocks. The harness
+	// detects that and refuses, which reaches the player as "the game server is not
+	// responding" on their first spin. Empty when a demo predates this, which is the old
+	// behaviour and no worse than it was.
+	var DATA_VERSION = CONFIG.dataVersion ? '?v=' + encodeURIComponent(CONFIG.dataVersion) : '';
+
 	// Play-money session profile. Mirrors mock-rgs/server.js's USD profile so the demo opens on
 	// the same ladder a local dev session does.
 	var STARTING_BALANCE = CONFIG.startingBalance || 1000000000; // 1,000.00
@@ -257,10 +265,13 @@
 
 		libraries[mode] = Promise.all([
 			fetchBinary(
-				DATA_BASE + 'books-' + mode + '.index.json.gz',
+				DATA_BASE + 'books-' + mode + '.index.json.gz' + DATA_VERSION,
 				'the "' + mode + '" outcome index',
 			).then(inflate),
-			fetchBinary(DATA_BASE + 'books-' + mode + '.blocks.gz', 'the "' + mode + '" outcome sample'),
+			fetchBinary(
+				DATA_BASE + 'books-' + mode + '.blocks.gz' + DATA_VERSION,
+				'the "' + mode + '" outcome sample',
+			),
 		])
 			.then(function (parts) {
 				var header = JSON.parse(decoder.decode(new Uint8Array(parts[0])));
