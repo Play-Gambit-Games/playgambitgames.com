@@ -69,7 +69,13 @@
 
 	// Cache key for the sample files. See the long note in demo/scripts/build-demo.mjs: these
 	// files ship under stable names and are fetched with force-cache, so without this a
-	// republish leaves returning visitors mixing an old index with new blocks. The harness
+	// republish leaves returning visitors mixing an old index with new blocks.
+	//
+	// Note which file actually carries the price, because it is easy to get wrong: the debit at
+	// handlePlay reads `library.header.cost`, and `header` is the per-mode INDEX
+	// (books-<mode>.index.json.gz), not sample-manifest.json. The manifest is descriptive. So a
+	// stale index is not merely a corrupt library, it is a wrong PRICE, and any check that a
+	// republish landed has to look at the indexes rather than the manifest. The harness
 	// detects that and refuses, which reaches the player as "the game server is not
 	// responding" on their first spin. Empty when a demo predates this, which is the old
 	// behaviour and no worse than it was.
