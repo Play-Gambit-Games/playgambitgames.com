@@ -104,12 +104,12 @@
       900.0,
       false
     ],
-    "sfx_cluster_combust": [
+    "sfx_cluster_shatter": [
       78364.98866213152,
       400.0,
       false
     ],
-    "sfx_tumble_embers": [
+    "sfx_tumble_debris": [
       78804.98866213152,
       450.0,
       false
@@ -174,7 +174,7 @@
       1500.0,
       false
     ],
-    "sfx_ember_shower_loop": [
+    "sfx_gold_dust_loop": [
       86454.98866213151,
       900.0,
       true
@@ -256,10 +256,10 @@
     "sfx_scatter_win": {
       "volume": 1.0
     },
-    "sfx_cluster_combust": {
+    "sfx_cluster_shatter": {
       "volume": 1.0
     },
-    "sfx_tumble_embers": {
+    "sfx_tumble_debris": {
       "volume": 1.0
     },
     "sfx_win_tally": {
@@ -298,7 +298,7 @@
     "sfx_winlevel_end": {
       "volume": 1.0
     },
-    "sfx_ember_shower_loop": {
+    "sfx_gold_dust_loop": {
       "volume": 1.0
     },
     "sfx_hoard_door_open": {
