@@ -1,7 +1,7 @@
 {
   "game": "dragonhoard",
   "seed": 20260801,
-  "generatedAt": "2026-08-29T06:27:17.210Z",
+  "generatedAt": "2026-08-30T15:55:44.300Z",
   "bookAmountMultiplier": 100,
   "method": "stratified-by-payout, stratum weight preserved",
   "modes": {
@@ -10,24 +10,24 @@
       "indexFile": "books-base.index.json.gz",
       "blocksFile": "books-base.blocks.gz",
       "blockSize": 32,
-      "blocks": 620,
-      "bytesGzip": 7679886,
-      "bytesRaw": 93325914,
-      "books": 19833,
+      "blocks": 619,
+      "bytesGzip": 8706461,
+      "bytesRaw": 109075921,
+      "books": 19787,
       "libraryBooks": 200000,
-      "strata": 2606,
+      "strata": 2922,
       "stratumWidth": 0,
       "minPerStratum": 1,
       "sample": {
-        "rtp": 0.9599990406295857,
-        "hitRate": 0.2907133832073315,
-        "bonusTriggerRate": 0.004721448732884987,
+        "rtp": 0.9600039796798207,
+        "hitRate": 0.2907159235452232,
+        "bonusTriggerRate": 0.004827835593259953,
         "maxPayoutMultiplier": 10000
       },
       "library": {
-        "rtp": 0.9599999996019895,
-        "hitRate": 0.29071438569194225,
-        "bonusTriggerRate": 0.005000100092728562
+        "rtp": 0.9599999988091146,
+        "hitRate": 0.29071444567517707,
+        "bonusTriggerRate": 0.005000159992305339
       }
     },
     "bonus": {
@@ -36,21 +36,21 @@
       "blocksFile": "books-bonus.blocks.gz",
       "blockSize": 32,
       "blocks": 52,
-      "bytesGzip": 2990538,
-      "bytesRaw": 38862260,
-      "books": 1634,
+      "bytesGzip": 3124924,
+      "bytesRaw": 41309114,
+      "books": 1649,
       "libraryBooks": 150000,
       "strata": 309,
       "stratumWidth": 0.02,
       "minPerStratum": 1,
       "sample": {
-        "rtp": 0.9599091591647969,
+        "rtp": 0.9599408304988148,
         "hitRate": 1,
         "bonusTriggerRate": 1,
         "maxPayoutMultiplier": 10000
       },
       "library": {
-        "rtp": 0.9600000000144103,
+        "rtp": 0.959999999994987,
         "hitRate": 1,
         "bonusTriggerRate": 1
       }
@@ -60,24 +60,24 @@
       "indexFile": "books-favor.index.json.gz",
       "blocksFile": "books-favor.blocks.gz",
       "blockSize": 32,
-      "blocks": 309,
-      "bytesGzip": 7260305,
-      "bytesRaw": 90553027,
-      "books": 9857,
+      "blocks": 306,
+      "bytesGzip": 8841513,
+      "bytesRaw": 113524812,
+      "books": 9786,
       "libraryBooks": 200000,
-      "strata": 3081,
+      "strata": 3332,
       "stratumWidth": 0,
       "minPerStratum": 1,
       "sample": {
-        "rtp": 0.9599990725492691,
-        "hitRate": 0.25999972928321124,
-        "bonusTriggerRate": 0.009632769478579214,
+        "rtp": 0.9600002125054862,
+        "hitRate": 0.2600000662225573,
+        "bonusTriggerRate": 0.009573993877383521,
         "maxPayoutMultiplier": 10000
       },
       "library": {
-        "rtp": 0.959999999142676,
-        "hitRate": 0.2600001439559325,
-        "bonusTriggerRate": 0.010000143986259166
+        "rtp": 0.9599999988915708,
+        "hitRate": 0.26000019196278934,
+        "bonusTriggerRate": 0.010000191986198392
       }
     },
     "plunder": {
@@ -85,72 +85,72 @@
       "indexFile": "books-plunder.index.json.gz",
       "blocksFile": "books-plunder.blocks.gz",
       "blockSize": 32,
-      "blocks": 74,
-      "bytesGzip": 2201820,
-      "bytesRaw": 28137249,
-      "books": 2358,
+      "blocks": 75,
+      "bytesGzip": 2182924,
+      "bytesRaw": 28305047,
+      "books": 2374,
       "libraryBooks": 100000,
-      "strata": 300,
+      "strata": 303,
       "stratumWidth": 0.02,
       "minPerStratum": 1,
       "sample": {
-        "rtp": 0.9602819231746056,
-        "hitRate": 0.7333343991474908,
-        "bonusTriggerRate": 0.38290580818533726,
+        "rtp": 0.9601877454762762,
+        "hitRate": 0.7333343580542573,
+        "bonusTriggerRate": 0.37159396274079903,
         "maxPayoutMultiplier": 10000
       },
       "library": {
-        "rtp": 0.9599999999963497,
-        "hitRate": 0.7333343833260825,
-        "bonusTriggerRate": 0.4000010499959395
+        "rtp": 0.9599999999780767,
+        "hitRate": 0.7333343833269678,
+        "bonusTriggerRate": 0.40000104999505204
       }
     },
     "gilded": {
-      "cost": 125,
+      "cost": 120,
       "indexFile": "books-gilded.index.json.gz",
       "blocksFile": "books-gilded.blocks.gz",
       "blockSize": 32,
       "blocks": 43,
-      "bytesGzip": 2278224,
-      "bytesRaw": 29674037,
-      "books": 1351,
+      "bytesGzip": 2301440,
+      "bytesRaw": 30736168,
+      "books": 1346,
       "libraryBooks": 150000,
-      "strata": 315,
+      "strata": 310,
       "stratumWidth": 0.02,
       "minPerStratum": 1,
       "sample": {
-        "rtp": 0.9601883980438034,
+        "rtp": 0.9602592696475749,
         "hitRate": 1,
         "bonusTriggerRate": 1,
         "maxPayoutMultiplier": 10000
       },
       "library": {
-        "rtp": 0.9599999999953881,
+        "rtp": 0.9599999999874081,
         "hitRate": 1,
         "bonusTriggerRate": 1
       }
     },
     "deep": {
-      "cost": 190,
+      "cost": 135,
       "indexFile": "books-deep.index.json.gz",
       "blocksFile": "books-deep.blocks.gz",
       "blockSize": 32,
       "blocks": 43,
-      "bytesGzip": 2898716,
-      "bytesRaw": 37909859,
-      "books": 1369,
+      "bytesGzip": 2586885,
+      "bytesRaw": 34828093,
+      "books": 1356,
       "libraryBooks": 120000,
       "strata": 271,
       "stratumWidth": 0.02,
       "minPerStratum": 1,
       "sample": {
-        "rtp": 0.9603673501446723,
+        "rtp": 0.9598257243272064,
         "hitRate": 1,
         "bonusTriggerRate": 1,
         "maxPayoutMultiplier": 10000
       },
       "library": {
-        "rtp": 0.9599999999845565,
+        "rtp": 0.9599999999811812,
         "hitRate": 1,
         "bonusTriggerRate": 1
       }
@@ -160,24 +160,24 @@
       "indexFile": "books-awaken.index.json.gz",
       "blocksFile": "books-awaken.blocks.gz",
       "blockSize": 32,
-      "blocks": 306,
-      "bytesGzip": 3317670,
-      "bytesRaw": 41377940,
-      "books": 9763,
+      "blocks": 307,
+      "bytesGzip": 5088892,
+      "bytesRaw": 65831248,
+      "books": 9803,
       "libraryBooks": 200000,
-      "strata": 1420,
+      "strata": 2210,
       "stratumWidth": 0,
       "minPerStratum": 1,
       "sample": {
-        "rtp": 0.9600015976988564,
-        "hitRate": 0.28871676498439064,
-        "bonusTriggerRate": 0.003002518984272763,
+        "rtp": 0.9599996895993331,
+        "hitRate": 0.29071443537175007,
+        "bonusTriggerRate": 0.004934375842945355,
         "maxPayoutMultiplier": 10000
       },
       "library": {
-        "rtp": 0.9599999986535992,
-        "hitRate": 0.288717468690173,
-        "bonusTriggerRate": 0.003003182995280518
+        "rtp": 0.9599999991803653,
+        "hitRate": 0.29071452569672646,
+        "bonusTriggerRate": 0.005000239992492511
       }
     }
   }
