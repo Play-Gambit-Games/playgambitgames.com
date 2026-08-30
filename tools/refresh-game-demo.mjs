@@ -28,6 +28,7 @@ import { execFileSync, spawn } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readNumericConstant } from './lib/config-constant.mjs';
 
 const TOOLS_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SITE_DIR = path.resolve(TOOLS_DIR, '..');
@@ -134,7 +135,7 @@ try {
 /* The panel states these as fact. If the game re-tunes any of them, the published disclosure is
    wrong until the manifest is rewritten, so this fails the run rather than shipping it. */
 const configSrc = readFileSync(path.join(game.repo, game.configPath), 'utf8');
-const constant = (name) => configSrc.match(new RegExp(`${name}\\s*=\\s*([\\d.]+)`))?.[1] ?? null;
+const constant = (name) => readNumericConstant(configSrc, name);
 const manifest = JSON.parse(readFileSync(path.join(TOOLS_DIR, 'demos', `${slug}.json`), 'utf8'));
 const factFor = (label) => manifest.facts.find((f) => f.label === label)?.value ?? null;
 
@@ -144,12 +145,16 @@ const factFor = (label) => manifest.facts.find((f) => f.label === label)?.value 
    figure was also mentioned in the surrounding prose. A gate that decides whether a public site
    auto-updates has to be exact about which claim it is checking. */
 /* Bind every row to the constant the game actually shows players, and to nothing else.
-   The max-win claim has now moved twice. It was one constant; then a split where
+   The max-win claim has now moved three times. It was one constant; then a split where
    ADVERTISED_MAX_WIN_MULTIPLIER (the floor across the published tables) drove MAX_WIN_LABEL and
-   the clamp was internal; then the submission pass re-split it so MAX_WIN_LABEL quotes the clamp
-   at 12,777x and a separate BONUS_BUY_MAX_WIN_LABEL carries the lower 10,667x that a bought bonus
-   can reach. The panel mirrors that split rather than picking one figure, because the paytable
-   states both and a demo that disagrees with the paytable is the defect this gate exists to stop.
+   the clamp was internal; then the submission pass re-split it so MAX_WIN_LABEL quoted the clamp
+   at 12,777x and a separate BONUS_BUY_MAX_WIN_LABEL carried the lower 10,667x a bought bonus could
+   reach; then a math regeneration lifted the bonus table to the full cap, so the game now defines
+   BONUS_BUY_MAX_WIN_MULTIPLIER as an ALIAS of MAX_WIN_MULTIPLIER and both figures read 12,777x.
+   The panel keeps mirroring whatever the config says rather than picking one figure, because the
+   paytable states both and a demo that disagrees with the paytable is the defect this gate exists
+   to stop. Note the alias: see tools/lib/config-constant.mjs for why a digits-only matcher read
+   that as a missing constant and blamed the wrong repo.
 
    Missing constants fail the run on purpose. That is not pedantry: the rename in the submission
    pass is exactly what this caught, and had the check silently skipped an absent constant the
