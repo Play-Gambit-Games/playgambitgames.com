@@ -1,6 +1,6 @@
 {
 	"frames": {
-		"1.png": {
+		"coin_1.png": {
 			"frame": {
 				"x": 0,
 				"y": 0,
@@ -20,7 +20,7 @@
 				"h": 480
 			}
 		},
-		"2.png": {
+		"coin_2.png": {
 			"frame": {
 				"x": 480,
 				"y": 0,
@@ -40,7 +40,7 @@
 				"h": 480
 			}
 		},
-		"3.png": {
+		"coin_3.png": {
 			"frame": {
 				"x": 0,
 				"y": 480,
@@ -60,7 +60,7 @@
 				"h": 480
 			}
 		},
-		"4.png": {
+		"coin_4.png": {
 			"frame": {
 				"x": 480,
 				"y": 480,
@@ -83,10 +83,10 @@
 	},
 	"animations": {
 		"coin": [
-			"1.png",
-			"2.png",
-			"3.png",
-			"4.png"
+			"coin_1.png",
+			"coin_2.png",
+			"coin_3.png",
+			"coin_4.png"
 		]
 	},
 	"meta": {
