@@ -57,7 +57,7 @@
 			#boot-curtain {
 				position: fixed;
 				inset: 0;
-				z-index: 998; /* below the Stake platform loader (999), above the canvas */
+				z-index: 998; /* below the platform loader (999), above the canvas */
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -152,7 +152,7 @@
 		</style>
 		
 		<link href="./_app/immutable/assets/bundle.eicLFcYX.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/bundle.DstEZOfm.js">
+		<link rel="modulepreload" href="./_app/immutable/bundle.Cp0YsYu2.js">
 	</head>
 	<body style="margin: 0; padding: 0; overflow: hidden; background-color: black">
 		<div id="boot-curtain">
@@ -165,10 +165,10 @@
 					"WINS" unconditionally, and deliberately NOT the `sweeps()` pair that
 					`identity.tagline` carries in src/game/theme.ts.
 
-					Stake names which casino a session is in from two independent places (see
+					The platform names which casino a session is in from two independent places (see
 					src/i18n/sweeps.ts): the `social` launch parameter, and
 					`jurisdiction.socialCasino` in the /wallet/authenticate response. The second
-					signal exists precisely because a stake.us session can be launched WITHOUT the
+					signal exists precisely because a social-casino session can be launched WITHOUT the
 					parameter, and it is a network round trip, so it cannot exist before the first
 					paint by construction. This curtain is static HTML in order to paint from the
 					first packets of the document, which is the same thing as saying it can never
@@ -178,7 +178,7 @@
 					the first surface of the game.
 
 					So this line is worded to be correct in BOTH casinos rather than resolved. The
-					two halves are not symmetric: one is restricted on stake.us, the other is
+					two halves are not symmetric: one is restricted in a social casino, the other is
 					acceptable in either casino, so the safe half is simply the default and there is
 					nothing left for the document to decide. A `data-social` attribute and a swap
 					script used to sit here. They read only the launch parameter, so in exactly the
@@ -211,13 +211,13 @@
 		<div>
 			<script>
 				{
-					__sveltekit_1v03vjp = {
+					__sveltekit_bgz4ab = {
 						base: new URL(".", location).pathname.slice(0, -1)
 					};
 
 					const element = document.currentScript.parentElement;
 
-					import("./_app/immutable/bundle.DstEZOfm.js").then((app) => {
+					import("./_app/immutable/bundle.Cp0YsYu2.js").then((app) => {
 						app.start(element)
 					});
 				}
