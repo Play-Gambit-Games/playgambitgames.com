@@ -1,0 +1,117 @@
+symbols.webp
+size: 2048,817
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+AT_art
+  rotate: false
+  xy: 1236, 0
+  size: 250, 342
+  orig: 384, 384
+  offset: 67, 21
+  index: -1
+CH_art
+  rotate: false
+  xy: 315, 0
+  size: 248, 343
+  orig: 384, 384
+  offset: 68, 20
+  index: -1
+CP_art
+  rotate: false
+  xy: 0, 0
+  size: 313, 343
+  orig: 384, 384
+  offset: 36, 20
+  index: -1
+CT_art
+  rotate: false
+  xy: 0, 345
+  size: 257, 342
+  orig: 384, 384
+  offset: 64, 21
+  index: -1
+GR_art
+  rotate: false
+  xy: 906, 0
+  size: 328, 342
+  orig: 384, 384
+  offset: 28, 21
+  index: -1
+ML_art
+  rotate: false
+  xy: 259, 345
+  size: 270, 342
+  orig: 384, 384
+  offset: 58, 20
+  index: -1
+MN_art
+  rotate: false
+  xy: 1488, 0
+  size: 320, 342
+  orig: 384, 384
+  offset: 33, 20
+  index: -1
+SC_art
+  rotate: false
+  xy: 871, 345
+  size: 343, 298
+  orig: 384, 384
+  offset: 21, 42
+  index: -1
+SC_swap
+  rotate: false
+  xy: 1216, 345
+  size: 343, 298
+  orig: 384, 384
+  offset: 21, 42
+  index: -1
+WD_art
+  rotate: false
+  xy: 531, 345
+  size: 338, 342
+  orig: 384, 384
+  offset: 24, 21
+  index: -1
+WD_swap
+  rotate: false
+  xy: 565, 0
+  size: 339, 343
+  orig: 384, 384
+  offset: 23, 21
+  index: -1
+fx_ember
+  rotate: false
+  xy: 250, 689
+  size: 52, 52
+  orig: 64, 64
+  offset: 6, 6
+  index: -1
+fx_glow
+  rotate: false
+  xy: 1703, 345
+  size: 236, 236
+  orig: 256, 256
+  offset: 10, 10
+  index: -1
+fx_ring
+  rotate: false
+  xy: 130, 689
+  size: 118, 118
+  orig: 256, 256
+  offset: 69, 69
+  index: -1
+fx_shine
+  rotate: false
+  xy: 1561, 345
+  size: 140, 256
+  orig: 256, 256
+  offset: 58, 0
+  index: -1
+fx_spark
+  rotate: false
+  xy: 0, 689
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
