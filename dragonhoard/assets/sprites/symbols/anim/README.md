@@ -66,27 +66,45 @@ Five things, and the third is the one that will bite.
 
 ## Do not regenerate casually
 
-The user has signed off on these exact files. Approved blobs:
+The user has signed off on these files. Blobs as shipped, re-verified 2026-09-11:
 
 ```
-sc_glow.webp  b477def49204573b98ed7b7153a2dca5f25a82be
+sc_glow.webp  ffe174d8717aa37272702e4fbbf2b45742f12a24
 sc_glow.json  e0edec45e166cc09a5111d4e08850c31d52f463f
-wd_glow.webp  95262c41a74a3f33a75133924435e355d7e9d616
+wd_glow.webp  4859b99a7808e935583e272e23109461adb593ac
 wd_glow.json  67ac82c45b6c8cc15a232aa30c8a96bdb2ffe1fe
 ```
 
-The two **webp hashes are the originals and have not moved**, which is the point: the
-frame-name rename above changed the JSON only. Running `build_symbol_anim.py` today
-re-encodes the sheets larger than the approved blobs (105,708 to 113,716 bytes for SC,
-64,296 to 71,908 for WD) on this machine's libwebp, so the rename was applied by running
-the builder and then restoring the two webp files from git. If you rebuild, check these
-four hashes before committing.
+`git hash-object <file>` to check.
 
-`git hash-object <file>` to check. A rebuild is not reproducible byte for byte across a
-different Pillow or libwebp, and the builder prefers `symbols-cutout/` when it exists and
-silently falls back to a plate median estimate when it does not, so the same command on a
-different checkout can produce a genuinely different asset. Rebuild only when the symbol
-art itself changes, and re-measure with `compare_symbol_anim.py` when you do.
+### Two corrections to what this file used to say
+
+**The webp hashes above are not the ones this file used to list.** It named
+`b477def49204573b98ed7b7153a2dca5f25a82be` for `sc_glow.webp` and
+`95262c41a74a3f33a75133924435e355d7e9d616` for `wd_glow.webp`, and said those two "are the
+originals and have not moved". They moved: commit `9d30bb48` ("Give the wild a word you can read,
+and rebuild everything keyed to its eye") rebuilt both sheets and did not update this file, so
+anyone checking the four hashes before committing would have found two mismatches and had no way
+to tell whether that was their own doing.
+
+**A rebuild IS byte reproducible here.** This file said it is not, and that a rebuild re-encodes
+larger than the shipped blobs on this machine's libwebp. Measured 2026-09-11: running
+`python3 scripts/build_symbol_anim.py` with no arguments reproduced all four files byte for byte,
+hash for hash, with a maximum per-pixel difference of zero on both sheets. The warning was true of
+the state this file was written in and is not true now.
+
+That measurement also answers a live question. The 2026-09-11 asset inventory recorded `wd_glow`
+as "derived from the PREVIOUS wild master", which would have meant the overlay drawn over the wild
+on every resting frame was keyed to art wild v2 replaced, and the plan's item 10 asked for a
+rebuild to fix it. It does not need one: the rebuild against today's shipped `WD.webp` reproduces
+today's shipped `wd_glow` exactly, so the overlay is already keyed to the current wild. The
+inventory row is wrong and this paragraph is the evidence.
+
+What stays true: the builder prefers `static/assets/sprites/symbols-cutout/` when it exists and
+falls back to a plate median estimate when it does not. That directory is not tracked in this
+repo and was absent for the shipped build, which is why the fallback path is the reproducible
+one. A checkout that has it will produce a genuinely different asset. Rebuild when the symbol art
+changes, and re-measure with `compare_symbol_anim.py` when you do.
 
 Full derivation, measurements and the flash safety numbers are in `AGENT-REPORT.md` at
 the repo root.
