@@ -1,5 +1,5 @@
 dragon.webp
-size: 2048,3641
+size: 2048,3624
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
@@ -13,8 +13,22 @@ wing_near
 wing_far
   rotate: false
   xy: 1160, 0
-  size: 666, 855
-  orig: 666, 855
+  size: 886, 855
+  orig: 886, 855
+  offset: 0, 0
+  index: -1
+foreleg_near
+  rotate: false
+  xy: 1160, 857
+  size: 320, 721
+  orig: 320, 721
+  offset: 0, 0
+  index: -1
+hindleg_near
+  rotate: false
+  xy: 1482, 857
+  size: 496, 678
+  orig: 496, 678
   offset: 0, 0
   index: -1
 tail
@@ -24,283 +38,444 @@ tail
   orig: 1045, 816
   offset: 0, 0
   index: -1
-foreleg_near
-  rotate: false
-  xy: 1047, 919
-  size: 320, 721
-  orig: 320, 721
-  offset: 0, 0
-  index: -1
-hindleg_near
-  rotate: false
-  xy: 1369, 919
-  size: 496, 678
-  orig: 496, 678
-  offset: 0, 0
-  index: -1
 foreleg_far
   rotate: false
-  xy: 0, 1737
+  xy: 1482, 1537
   size: 504, 658
   orig: 504, 658
   offset: 0, 0
   index: -1
-neck
-  rotate: false
-  xy: 506, 1737
-  size: 528, 589
-  orig: 528, 589
-  offset: 0, 0
-  index: -1
 hindleg_far
   rotate: false
-  xy: 1036, 1737
+  xy: 1047, 1580
   size: 343, 565
   orig: 343, 565
   offset: 0, 0
   index: -1
+neck
+  rotate: false
+  xy: 0, 1737
+  size: 528, 589
+  orig: 528, 589
+  offset: 0, 0
+  index: -1
 trunk
   rotate: false
-  xy: 0, 2397
+  xy: 530, 2197
   size: 1030, 564
   orig: 1030, 564
   offset: 0, 0
   index: -1
 head
   rotate: false
-  xy: 1032, 2397
+  xy: 1562, 2197
   size: 435, 354
   orig: 435, 354
   offset: 0, 0
   index: -1
 crest
   rotate: false
-  xy: 1469, 2397
+  xy: 0, 2328
   size: 247, 309
   orig: 247, 309
   offset: 0, 0
   index: -1
-embers
-  rotate: false
-  xy: 0, 2963
-  size: 384, 256
-  orig: 384, 256
-  offset: 0, 0
-  index: -1
 mouth_glow
   rotate: false
-  xy: 386, 2963
+  xy: 249, 2328
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
+embers
+  rotate: false
+  xy: 1562, 2553
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+foreleg_near_rim
+  rotate: false
+  xy: 1948, 2553
+  size: 80, 180
+  orig: 80, 180
+  offset: 0, 0
+  index: -1
+wing_near_rim
+  rotate: false
+  xy: 0, 2639
+  size: 289, 229
+  orig: 289, 229
+  offset: 0, 0
+  index: -1
+foreleg_near_lit
+  rotate: false
+  xy: 1948, 2735
+  size: 80, 180
+  orig: 80, 180
+  offset: 0, 0
+  index: -1
+wing_near_lit
+  rotate: false
+  xy: 291, 2763
+  size: 289, 229
+  orig: 289, 229
+  offset: 0, 0
+  index: -1
+wing_far_rim
+  rotate: false
+  xy: 582, 2763
+  size: 221, 213
+  orig: 221, 213
+  offset: 0, 0
+  index: -1
+wing_far_lit
+  rotate: false
+  xy: 805, 2763
+  size: 221, 213
+  orig: 221, 213
+  offset: 0, 0
+  index: -1
+tail1_rim
+  rotate: false
+  xy: 1028, 2763
+  size: 261, 204
+  orig: 261, 204
+  offset: 0, 0
+  index: -1
+tail1_lit
+  rotate: false
+  xy: 1291, 2763
+  size: 261, 204
+  orig: 261, 204
+  offset: 0, 0
+  index: -1
 jaw
   rotate: false
-  xy: 644, 2963
+  xy: 1554, 2811
   size: 351, 192
   orig: 351, 192
   offset: 0, 0
   index: -1
+hindleg_near_upper_rim
+  rotate: false
+  xy: 0, 2870
+  size: 124, 169
+  orig: 124, 169
+  offset: 0, 0
+  index: -1
+hindleg_near_upper_lit
+  rotate: false
+  xy: 126, 2870
+  size: 124, 169
+  orig: 124, 169
+  offset: 0, 0
+  index: -1
+foreleg_far_upper_rim
+  rotate: false
+  xy: 1907, 2917
+  size: 126, 164
+  orig: 126, 164
+  offset: 0, 0
+  index: -1
 eye_open
   rotate: false
-  xy: 997, 2963
+  xy: 1028, 2969
   size: 167, 167
   orig: 167, 167
   offset: 0, 0
   index: -1
 eye_closed
   rotate: false
-  xy: 1166, 2963
+  xy: 1197, 2969
   size: 167, 167
   orig: 167, 167
   offset: 0, 0
   index: -1
 eye_half
   rotate: false
-  xy: 1335, 2963
+  xy: 1366, 2969
   size: 167, 167
   orig: 167, 167
   offset: 0, 0
   index: -1
+foreleg_far_upper_lit
+  rotate: false
+  xy: 582, 2978
+  size: 126, 164
+  orig: 126, 164
+  offset: 0, 0
+  index: -1
 horn_back
   rotate: false
-  xy: 1504, 2963
+  xy: 710, 2978
   size: 262, 160
   orig: 262, 160
   offset: 0, 0
   index: -1
+neck1_rim
+  rotate: false
+  xy: 1535, 3005
+  size: 132, 147
+  orig: 132, 147
+  offset: 0, 0
+  index: -1
+neck1_lit
+  rotate: false
+  xy: 1669, 3005
+  size: 132, 147
+  orig: 132, 147
+  offset: 0, 0
+  index: -1
+hindleg_far_upper_rim
+  rotate: false
+  xy: 1803, 3005
+  size: 85, 141
+  orig: 85, 141
+  offset: 0, 0
+  index: -1
 ground_glow
   rotate: false
-  xy: 0, 3221
+  xy: 0, 3041
   size: 512, 160
   orig: 512, 160
   offset: 0, 0
   index: -1
+hindleg_far_upper_lit
+  rotate: false
+  xy: 1890, 3083
+  size: 85, 141
+  orig: 85, 141
+  offset: 0, 0
+  index: -1
+crest_rim
+  rotate: false
+  xy: 1977, 3083
+  size: 61, 77
+  orig: 61, 77
+  offset: 0, 0
+  index: -1
+hips_rim
+  rotate: false
+  xy: 974, 3138
+  size: 257, 141
+  orig: 257, 141
+  offset: 0, 0
+  index: -1
+hips_lit
+  rotate: false
+  xy: 1233, 3138
+  size: 257, 141
+  orig: 257, 141
+  offset: 0, 0
+  index: -1
+contact_shadow
+  rotate: false
+  xy: 710, 3140
+  size: 256, 128
+  orig: 256, 128
+  offset: 0, 0
+  index: -1
 flow_00
   rotate: false
-  xy: 514, 3221
+  xy: 514, 3144
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_01
   rotate: false
-  xy: 708, 3221
+  xy: 1492, 3154
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_02
   rotate: false
-  xy: 902, 3221
+  xy: 1686, 3154
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
+crest_lit
+  rotate: false
+  xy: 1977, 3162
+  size: 61, 77
+  orig: 61, 77
+  offset: 0, 0
+  index: -1
 flow_03
   rotate: false
-  xy: 1096, 3221
+  xy: 0, 3203
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_04
   rotate: false
-  xy: 1290, 3221
+  xy: 194, 3203
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
+lower_jaw_rim
+  rotate: false
+  xy: 1940, 3241
+  size: 87, 48
+  orig: 87, 48
+  offset: 0, 0
+  index: -1
 flow_05
   rotate: false
-  xy: 1484, 3221
+  xy: 708, 3270
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_06
   rotate: false
-  xy: 1678, 3221
+  xy: 388, 3274
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_07
   rotate: false
-  xy: 0, 3383
+  xy: 902, 3281
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_08
   rotate: false
-  xy: 194, 3383
+  xy: 1096, 3281
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_09
   rotate: false
-  xy: 388, 3383
+  xy: 1290, 3281
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_10
   rotate: false
-  xy: 582, 3383
+  xy: 1484, 3284
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_11
   rotate: false
-  xy: 776, 3383
+  xy: 1678, 3284
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
+lower_jaw_lit
+  rotate: false
+  xy: 1940, 3291
+  size: 87, 48
+  orig: 87, 48
+  offset: 0, 0
+  index: -1
 flow_12
   rotate: false
-  xy: 970, 3383
+  xy: 0, 3333
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_13
   rotate: false
-  xy: 1164, 3383
+  xy: 194, 3333
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_14
   rotate: false
-  xy: 1358, 3383
+  xy: 582, 3400
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_15
   rotate: false
-  xy: 1552, 3383
+  xy: 388, 3404
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_16
   rotate: false
-  xy: 1746, 3383
+  xy: 776, 3411
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_17
   rotate: false
-  xy: 0, 3513
+  xy: 970, 3411
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_18
   rotate: false
-  xy: 194, 3513
+  xy: 1164, 3411
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_19
   rotate: false
-  xy: 388, 3513
+  xy: 1358, 3414
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_20
   rotate: false
-  xy: 582, 3513
+  xy: 1552, 3414
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_21
   rotate: false
-  xy: 776, 3513
+  xy: 1746, 3414
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_22
   rotate: false
-  xy: 970, 3513
+  xy: 0, 3463
   size: 192, 128
   orig: 192, 128
   offset: 0, 0
   index: -1
 flow_23
   rotate: false
-  xy: 1164, 3513
+  xy: 194, 3463
   size: 192, 128
   orig: 192, 128
+  offset: 0, 0
+  index: -1
+head_part_rim
+  rotate: false
+  xy: 582, 3530
+  size: 108, 88
+  orig: 108, 88
+  offset: 0, 0
+  index: -1
+head_part_lit
+  rotate: false
+  xy: 388, 3534
+  size: 108, 88
+  orig: 108, 88
   offset: 0, 0
   index: -1
