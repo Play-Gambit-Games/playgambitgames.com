@@ -64,18 +64,47 @@
 			LoadingCurtain.svelte's whole reason to exist is to paint on the first frame, and as a
 			Svelte component it structurally cannot: nothing it renders exists until the app bundle
 			has downloaded, parsed and mounted. On a 400kbps connection that measured at 9.6s of
-			black screen. This markup and these ~1.5KB of CSS are the same design expressed in
-			static HTML, so they paint from the first packets of the document, before a single byte
-			of JS or of the game's assets.
+			black screen. This markup and its CSS are the same design expressed in static HTML, so
+			they paint from the first packets of the document, before a single byte of JS or of the
+			game's assets.
 
-			Text is hardcoded rather than read from game/theme.ts because there is no JS yet. The
-			title mirrors identity.title and must be kept in step with it; the line under it does
-			NOT mirror identity.tagline, and the comment beside that line says why. The font stack
-			is fonts.display, which resolves to the Georgia/serif fallback for the first moment and
-			upgrades silently once Cinzel loads.
+			It carries NO copy and no progress bar. The cavern ground and the breathing teal glow
+			are the whole of it: nothing here names the game, and nothing here claims to be
+			reporting progress. The comments beside the markup below say why on both counts, and
+			where the game's name and tagline actually reach the player.
 
 			LoadingCurtain.svelte adopts this element on mount (progress, then dismissal) instead
 			of rendering a second copy of it -- see that file.
+
+			WHAT GATES THE FIRST PAINT, MEASURED, because removing the copy looked at first like it
+			had cost half a second and it had not. Chromium will not paint while a render-blocking
+			stylesheet is pending, and SvelteKit's head injection point below adds one after this
+			<style>. That stylesheet is 43KB, so on a slow link it, and not this markup, is what
+			decides when the curtain appears. At 800kbps with 120ms of latency, three runs each,
+			against the same build with byte-identical asset URLs:
+
+			  this document                     stylesheet in at 1147 to 1174ms, paint 1184 to 1256ms
+			  the same plus the old copy         stylesheet in at 1157 to 1174ms, paint 1212 to 1236ms
+
+			No document sizes are quoted on purpose. Every earlier version of this paragraph gave
+			one, and every one of them went stale the next time somebody edited a comment in this
+			file, which changes the byte count without changing a pixel. For the record in the
+			only form that keeps: this branch's built document is LARGER than main's, because it
+			carries more comment text than it removed copy, and first paint is unchanged anyway.
+
+			Paint follows the stylesheet by 30 to 80ms either way and the two documents are
+			indistinguishable, so the copy removal neither helped nor hurt. Note that a
+			screenshot taken during the boot cannot settle this question in either direction:
+			capturing one forces a composite, which rasterises this inline markup in about 140ms
+			whether or not the browser has presented a frame to the player. Compare documents
+			against the same build with byte-identical asset URLs, or the measurement is of
+			bandwidth rather than of the curtain.
+
+			(One trap, since it cost a build. Do NOT write SvelteKit's head placeholder literally
+			in a comment in this file: the template substitutes the FIRST occurrence, so a mention
+			of it up here silently eats the real one and the document ships with no stylesheet and
+			no module preloads at all. check-boot-curtain.mjs catches that, which is how this
+			paragraph came to be here.)
 		-->
 		<style>
 			#boot-curtain {
@@ -88,7 +117,6 @@
 				overflow: hidden;
 				/* palette.obsidianCavern -> obsidianDeep: the cave's own deep blue, never neutral black. */
 				background: radial-gradient(ellipse at 50% 45%, #0b1b2a 0%, #050e16 55%, #030910 100%);
-				font-family: 'Cinzel', 'Trajan Pro', Georgia, serif;
 				opacity: 1;
 				transition: opacity 320ms ease-out;
 			}
@@ -108,75 +136,66 @@
 				0%, 100% { transform: scale(0.92); opacity: 0.65; }
 				50% { transform: scale(1.06); opacity: 1; }
 			}
-			#boot-curtain .content {
-				position: relative;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				padding: 0 6vw;
-				max-width: 640px;
-				width: 100%;
-			}
-			#boot-curtain h1 {
-				margin: 0;
-				font-weight: 600;
-				/* Scales with the viewport so it reads on a 320px phone and a 2560px ultrawide alike. */
-				font-size: clamp(1.6rem, 7vmin, 3.4rem);
-				letter-spacing: 0.14em;
-				text-align: center;
-				line-height: 1.1;
-				background: linear-gradient(180deg, #ffe9a8 0%, #ffd873 45%, #e7c25b 100%);
-				-webkit-background-clip: text;
-				background-clip: text;
-				color: #ffd873;
-				text-shadow: 0 0 28px rgba(255, 216, 115, 0.28);
-			}
 			/*
-				Only make the fill transparent where background-clip:text actually works. Older
-				WebKit/Android builds that do not support it would otherwise render an invisible
-				title on the cavern gradient, which is exactly the blank screen this element exists
-				to prevent; they keep the flat gold `color` above instead.
+				THE PROGRESS BAR IS NOT DRAWN, and this is the element that used to draw it.
+
+				It was a 4px gold track across the middle of the screen with a fill that grew with
+				`stateApp.loadingProgress`. It never grew. A MutationObserver on this element's
+				aria-valuenow caught every write to that state over a whole boot, and there were four,
+				carrying two distinct values:
+
+				  t+1148ms   loadingProgress 0     fill rendered 0px
+				  t+14869ms  loadingProgress 0     fill rendered 0px
+				  t+42880ms  loadingProgress 100   fill rendered 0px
+				  t+42893ms  loadingProgress 100   fill rendered 0px
+
+				The curtain stops being the surface the player is looking at at t+14593ms, when the
+				platform's card and the studio ident mount from the same +layout.svelte on the same tick,
+				both above it. So the value never takes an intermediate step at all, and the one step it
+				does take lands 28 seconds after this element was last visible. Sampled every 25ms at
+				390x844 and 1440x900 and at 400kbps, 800kbps and unthrottled, the number of frames in
+				which the curtain was the top surface AND the fill had any width was 0 out of six runs:
+				a 267.70px track on the phone and 300.00px on the desktop, with a 0.00px fill in every
+				frame anyone could see. A bar that is provably always at zero is not a dim bar, it is a
+				gold line drawn on an empty screen, so it went.
+
+				WHERE THE FIX WOULD GO, IF SOMEONE LATER WANTS A WORKING BAR: not here. The markup was
+				never the problem. packages/pixi-svelte/src/lib/components/AssetsLoader.svelte drives
+				`stateApp.loadingProgress`, and its `onProgress` counts an asset only when that asset
+				reports a value of 1, and only once `preLoaded` is true. The preload phase, which is
+				where the download time actually goes, therefore reports nothing at all, and the total
+				arrives as a single jump at the end. That file is shared by six apps, and the studio
+				ident's own bar reads the same state and sits at 0% for most of its run for exactly the
+				same reason, which is visible in the sequence captures under
+				docs/boot-first-screen-2026-09-12. Fix it there and both bars start working; nothing done
+				to this rule can achieve that.
+
+				What is left here is that same element with nothing visible about it, because deleting it
+				outright would take something real with it. It is the game's only accessible loading
+				indicator: GambitLoader.svelte is `aria-hidden` precisely BECAUSE this progressbar
+				announces the loading state underneath it, and that file says so. So the role, the label
+				and the value survive for a screen reader, LoadingCurtain.svelte keeps updating
+				aria-valuenow, and nothing is painted. The clip-path idiom keeps it in the accessibility
+				tree; `display: none` or `visibility: hidden` would take it out of that tree too.
 			*/
-			@supports ((-webkit-background-clip: text) or (background-clip: text)) {
-				#boot-curtain h1 { color: transparent; }
-			}
-			#boot-curtain .rule {
-				width: min(60%, 260px);
-				height: 2px;
-				margin: clamp(10px, 2.4vmin, 20px) 0 clamp(8px, 1.8vmin, 14px);
-				background: linear-gradient(90deg, rgba(53, 214, 208, 0) 0%, #35d6d0 50%, rgba(53, 214, 208, 0) 100%);
-			}
-			#boot-curtain .tagline {
-				margin: 0 0 clamp(16px, 4vmin, 34px);
-				font-size: clamp(0.62rem, 2.1vmin, 0.9rem);
-				letter-spacing: 0.34em;
-				text-indent: 0.34em; /* balances the trailing letter-space so the line stays centred */
-				color: #ffb46b;
-				text-align: center;
-			}
-			#boot-curtain .track {
-				width: min(78%, 300px);
-				height: 4px;
-				border-radius: 2px;
-				background: rgba(231, 194, 91, 0.16);
+			#boot-curtain .progress {
+				position: absolute;
+				width: 1px;
+				height: 1px;
+				margin: -1px;
+				padding: 0;
+				border: 0;
 				overflow: hidden;
-			}
-			#boot-curtain .fill {
-				height: 100%;
-				width: 0%;
-				border-radius: 2px;
-				background: linear-gradient(90deg, #e7c25b 0%, #ffd873 60%, #ffe9a8 100%);
-				box-shadow: 0 0 12px rgba(255, 216, 115, 0.55);
-				transition: width 220ms ease-out;
+				clip-path: inset(50%);
+				white-space: nowrap;
 			}
 			@media (prefers-reduced-motion: reduce) {
 				#boot-curtain .glow { animation: none; }
-				#boot-curtain .fill { transition: none; }
 			}
 		</style>
 		
 		<link href="./_app/immutable/assets/bundle.DUKN62xJ.css" rel="stylesheet">
-		<link rel="modulepreload" href="./_app/immutable/bundle.B8RlSnOq.js">
+		<link rel="modulepreload" href="./_app/immutable/bundle.Cufd9IRe.js">
 		<!-- seo:start, generated by tools/seo-head.mjs from tools/demos/<slug>.json, do not hand-edit -->
 		<title>Play the Dragon Hoard Demo: a Cluster Pays Tumble Slot</title>
 		<meta name="description" content="Dragon Hoard is a cluster pays slot in development at Gambit Games. The browser demo is an early build with rough edges. Tumbling cascades, play money only.">
@@ -200,67 +219,72 @@
 	<body style="margin: 0; padding: 0; overflow: hidden; background-color: black">
 		<div id="boot-curtain">
 			<div class="glow"></div>
-			<div class="content">
-				<h1>DRAGONHOARD</h1>
-				<div class="rule"></div>
-				<p id="boot-tagline" class="tagline">CLUSTER WINS + TUMBLE</p>
-				<!--
-					"WINS" unconditionally, and deliberately NOT the `sweeps()` pair that
-					`identity.tagline` carries in src/game/theme.ts.
+			<!--
+				The curtain carries NO copy at all and draws nothing but its ground: no title, no
+				tagline, no mark, and since the measurement recorded in the style block above, no
+				progress bar either. The cavern gradient and its breathing glow are the whole picture.
 
-					The platform names which casino a session is in from two independent places (see
-					src/i18n/sweeps.ts): the `social` launch parameter, and
-					`jurisdiction.socialCasino` in the /wallet/authenticate response. The second
-					signal exists precisely because a social-casino session can be launched WITHOUT the
-					parameter, and it is a network round trip, so it cannot exist before the first
-					paint by construction. This curtain is static HTML in order to paint from the
-					first packets of the document, which is the same thing as saying it can never
-					know the jurisdiction. Substituting the wording once the response lands would be
-					too late: on a sweepstakes casino the restricted verb would already have been on
-					screen, and a restricted term shown for one frame is still a restricted term on
-					the first surface of the game.
+				It used to paint the game's name and a mechanic line here. That put the game's name on
+				screen before the Gambit Games studio ident and then again on the title card immediately
+				after it, so the game introduced itself twice around the studio's card. The ident is now
+				the first thing of OURS that a player sees, and the title card
+				(components/LoadingScreen.svelte) is the game's single branding moment.
 
-					So this line is worded to be correct in BOTH casinos rather than resolved. The
-					two halves are not symmetric: one is restricted in a social casino, the other is
-					acceptable in either casino, so the safe half is simply the default and there is
-					nothing left for the document to decide. A `data-social` attribute and a swap
-					script used to sit here. They read only the launch parameter, so in exactly the
-					case the second signal was added for they changed nothing, and with a safe
-					default they can change nothing at all. Machinery that cannot alter the outcome
-					but reads as protection is worse than none, so it is gone.
+				Not the first thing a player sees, though, and nothing here should claim it is: the
+				platform's own "Powered By" card plays at z-index 999 (components-shared's
+				LoaderStakeEngine) between this curtain and the ident, measured at 14.6s to 34.7s of a
+				boot throttled to 800kbps. That card appears on BOTH surfaces. It is not a
+				casino-only thing that the demo escapes: the demo build on playgambitgames.com was
+				measured under the same throttle and the card is the top surface there at 11.0s.
 
-					The branded wording is not lost. It still reaches a standard launch a moment
-					later, on the in-game splash (components/LoadingScreen.svelte, which renders
-					inside <Authenticate> and therefore knows the jurisdiction for real) through
-					`identity.tagline`.
+				That fact killed a design. The curtain was briefly repainted in the studio ident's
+				own charcoal ground so the two would read as one screen; the work is kept on
+				`wip/dh-boot-curtain-ident-ground`. It was abandoned because there is no
+				curtain-to-ident seam to hide on either surface, the platform's card sits across
+				it, so matching the ident gained nothing a player could perceive while costing the
+				game's palette on its own first screen. If that idea comes back, this is the
+				measurement to check first.
 
-					No restricted term is written anywhere in this file, comments included, so the
-					built document is clean to a plain grep and not only to a parser.
-					scripts/check-boot-curtain.mjs fails the build on one in the markup, which is
-					what paints, and warns on one in a comment, which does not.
-				-->
-				<div
-					class="track"
-					role="progressbar"
-					aria-valuenow="0"
-					aria-valuemin="0"
-					aria-valuemax="100"
-					aria-label="Loading"
-				>
-					<div class="fill"></div>
-				</div>
-			</div>
+				Removing the copy also retires a jurisdiction problem rather than solving it. The
+				platform's requirements bar a fixed list of words in a social casino, and the game learns
+				which casino a session is in from two independent signals (the `social` launch parameter,
+				and `jurisdiction.socialCasino` in the /wallet/authenticate response, see
+				src/i18n/sweeps.ts). Neither can be known at first paint: the response is a network round
+				trip, and the parameter is absent in exactly the case the second signal was added for. So
+				this element could never resolve its own wording by construction, and substituting the
+				wording once the response landed would be too late, because a restricted word would
+				already have been on screen for a frame. The line that used to sit here was worded to be
+				correct in BOTH casinos for that reason. With no copy at all there is no wording left to
+				resolve. That is a stronger property than a carefully chosen line, not a weaker one.
+
+				The branded tagline is not lost. It still reaches the player a moment later on the title
+				card, which renders inside <Authenticate> and therefore knows the jurisdiction for real,
+				through `identity.tagline`.
+
+				No restricted term is written anywhere in this file, comments included, so the built
+				document is clean to a plain grep and not only to a parser.
+				scripts/check-boot-curtain.mjs fails the build if this element disappears, if any text
+				copy reappears inside it, or if a restricted term reaches its markup.
+			-->
+			<div
+				class="progress"
+				role="progressbar"
+				aria-valuenow="0"
+				aria-valuemin="0"
+				aria-valuemax="100"
+				aria-label="Loading"
+			></div>
 		</div>
 		<div>
 			<script>
 				{
-					__sveltekit_1tux49i = {
+					__sveltekit_jmnqfv = {
 						base: new URL(".", location).pathname.slice(0, -1)
 					};
 
 					const element = document.currentScript.parentElement;
 
-					import("./_app/immutable/bundle.B8RlSnOq.js").then((app) => {
+					import("./_app/immutable/bundle.Cufd9IRe.js").then((app) => {
 						app.start(element)
 					});
 				}
