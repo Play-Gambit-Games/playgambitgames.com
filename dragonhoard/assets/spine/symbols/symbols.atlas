@@ -5,24 +5,24 @@ filter: Linear,Linear
 repeat: none
 AT_art
   rotate: false
-  xy: 1625, 0
+  xy: 1556, 0
   size: 250, 342
   orig: 384, 384
   offset: 67, 21
   index: -1
 CH_art
   rotate: false
-  xy: 315, 0
-  size: 288, 343
+  xy: 1004, 0
+  size: 286, 342
   orig: 384, 384
-  offset: 48, 20
+  offset: 49, 21
   index: -1
 CP_art
   rotate: false
-  xy: 0, 0
-  size: 313, 343
+  xy: 690, 0
+  size: 312, 342
   orig: 384, 384
-  offset: 36, 20
+  offset: 36, 21
   index: -1
 CT_art
   rotate: false
@@ -33,10 +33,10 @@ CT_art
   index: -1
 GR_art
   rotate: false
-  xy: 605, 0
-  size: 328, 343
+  xy: 1292, 0
+  size: 262, 342
   orig: 384, 384
-  offset: 29, 20
+  offset: 61, 21
   index: -1
 ML_art
   rotate: false
@@ -68,14 +68,14 @@ SC_swap
   index: -1
 WD_art
   rotate: false
-  xy: 935, 0
+  xy: 0, 0
   size: 343, 343
   orig: 384, 384
   offset: 21, 20
   index: -1
 WD_swap
   rotate: false
-  xy: 1280, 0
+  xy: 345, 0
   size: 343, 343
   orig: 384, 384
   offset: 21, 20
